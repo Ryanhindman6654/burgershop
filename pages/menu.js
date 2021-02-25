@@ -1,4 +1,33 @@
 import firebaseInstance from '../config/firebase'
+import styled from 'styled-components'
+
+const Title = styled.h1`
+  font-size: 50px;
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: center;
+`
+
+const MenuList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+`
+const MenuItem = styled.li`
+  list-style: none;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.5em;
+
+  background-color: ${({vegetarian}) => (vegetarian ? 'green' : 'red')};
+`
+const ProductTitle = styled.h3`
+
+`
+const ProductContentItem = styled.span`
+  padding: 0.3em;
+  margin-right: 1em;
+  border: 1px solid black;
+  border-radius: 0.5em;
+`
 
 function Menu({ productsArray, error }) {
 
@@ -12,27 +41,25 @@ function Menu({ productsArray, error }) {
 
   return (
     <main>
-      <h1>Meny</h1>
-      <ul>
+      <Title>Meny</Title>
+      <MenuList>
         {productsArray.map(item => {
           return (
-            <li key={item.id}>
-              <h3>{item.title}</h3>
-              <p>{item.price},-</p>
+            <MenuItem vegetarian={item.vegetarian} key={item.id}>
+              <ProductTitle>{item.title}</ProductTitle>
               {item.vegetarian && <p>Vegetarian</p>}
               {item.contents && 
                 <p>
                   {item.contents.map(item => {
-                    return (
-                      <span>{item} </span>
-                    )
+                    return <ProductContentItem key={item}>{item}</ProductContentItem>
                   })}
                 </p>
               }
-            </li>
+              <p>{item.price},-</p>
+            </MenuItem>
           )
         })}
-      </ul>
+      </MenuList>
     </main>
   );
 };

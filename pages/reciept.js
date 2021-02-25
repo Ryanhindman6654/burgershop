@@ -10,11 +10,6 @@ export default function Reciept({ order, error }) {
 
   return (
     <>
-      {/* <pre>
-        <code>
-          {JSON.stringify(order, null, 2)}
-        </code>
-      </pre> */}
       <h1>Ordre</h1>
       <h2>Din bestilling {order.ordernumber}</h2>
       <p>Dato</p>
@@ -32,11 +27,11 @@ export default function Reciept({ order, error }) {
       </div>
       <div>
         {
-        (order.status.delivered === true) ?
-          'Ordren er levert.' :
-        (order.status.packaged === true) ?
-          'Ordren er klar for henting' : 
-          'Ordren er på vei'
+          (order.status.delivered === true) 
+          ? 'Ordren er levert.' 
+          : (order.status.packaged === true)
+          ? 'Ordren er klar for henting'
+          : 'Ordren er på vei'
         }
       </div>
     </>
