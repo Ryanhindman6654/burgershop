@@ -6,7 +6,6 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.colors.primary};
   text-align: center;
 `
-
 const MenuList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -16,11 +15,9 @@ const MenuItem = styled.li`
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
-
   background-color: ${({vegetarian}) => (vegetarian ? 'green' : 'red')};
 `
 const ProductTitle = styled.h3`
-
 `
 const ProductContentItem = styled.span`
   padding: 0.3em;
@@ -32,9 +29,7 @@ const ProductContentItem = styled.span`
 function Menu({ productsArray, error }) {
 
   if (error !== undefined) {
-    return (
-      <p>En feil har oppstått: {error}</p>
-    )
+    return <p>En feil har oppstått: {error}</p>
   }
 
   console.log(productsArray)
