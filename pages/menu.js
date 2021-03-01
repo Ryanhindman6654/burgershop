@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Title = styled.h1`
   font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.deep_red};
   text-align: center;
 `
 const MenuList = styled.ul`
@@ -15,7 +15,7 @@ const MenuItem = styled.li`
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
-  background-color: ${({vegetarian}) => (vegetarian ? 'green' : 'red')};
+  background-color: ${({vegetarian, theme}) => (vegetarian ? theme.colors.neon_green : theme.colors.pale_pink)};
 `
 const ProductTitle = styled.h3`
 `

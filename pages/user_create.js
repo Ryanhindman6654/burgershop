@@ -1,6 +1,45 @@
 import firebaseInstance from '../config/firebase'
 import  { useState, useEffect } from 'react'
 import InputBlock from '../components/InputBlock'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  background-color: ${({ theme }) => theme.colors.background};
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2em;
+`
+
+const LoginForm = styled.form`
+  padding: 1em;
+  width: 500px;
+  background-color: ${({ theme }) => theme.colors.light_green};
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  justify-content: space-between;
+  gap: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1em;
+`
+
+const LoginButton = styled.button`
+  color: white;
+  background-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 1em;
+  border: ${({ theme }) => `1px solid ${theme.colors.neon_green}`};
+  padding: 0.5em;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.neon_green};
+    border: ${({ theme }) => `1px solid ${theme.colors.primary}`};
+    color: black;
+  }
+`
 
 function CreateUser() {
 
@@ -35,9 +74,9 @@ function CreateUser() {
   }
 
   return (
-    <main>
+    <Container>
       <h1>New user</h1>
-      <form
+      <LoginForm
         name='add-user'
         id='add-user'
         action='/'
@@ -60,9 +99,9 @@ function CreateUser() {
           labelText='Passord'
           inputChangeHandler={event => handleUserPasswordChange(event)}
         />
-        <button type='submit'>Registrer</button>
-      </form>
-    </main>
+        <LoginButton type='submit'>Registrer</LoginButton>
+      </LoginForm>
+    </Container>
   );
 };
 
