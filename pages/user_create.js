@@ -1,5 +1,5 @@
 import firebaseInstance from '../config/firebase'
-import  { useState, useEffect } from 'react'
+import  { useState } from 'react'
 import InputBlock from '../components/InputBlock'
 import styled from 'styled-components'
 
@@ -66,7 +66,7 @@ function CreateUser() {
       .then(() => {
         console.log('Lagt til');
         // state, en melding dukker opp om at det er lagt til
-        // brukeren blir sendt videre? =>
+        // brukeren blir sendt videre? —>
       })
       .catch(error => {
         console.error(error);

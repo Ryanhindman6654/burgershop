@@ -20,9 +20,7 @@ const OrderItem = styled.li`
 const OrderTitle = styled.h3`
 `
 const StatusButton = styled.button`
-
 `
-
 
 function Orders({ ordersArray, error }) {
 
@@ -32,23 +30,38 @@ function Orders({ ordersArray, error }) {
 
   console.log(ordersArray)
 
+  function handleClick(orderId) {
+
+    const orderCollection = firebaseInstance.firestore().collection('orders');
+    orderCollection.doc(orderId).update({
+      packaged: true,
+    })
+      .then(() => {
+        console.log('Packaged');
+        console.log(orderCollection)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+
+  }
+
   return (
     <main>
       <Title>Orders</Title>
       <OrderList>
         {ordersArray.map(item => {
           return (
-            <OrderItem packaged={item.status.packaged} key={item.id}>
+            <OrderItem packaged={item.packaged} key={item.id}>
               <OrderTitle>{item.ordernumber}</OrderTitle>
               <ul>
-                {item.content.map(item => {
-                  return <li key={item.title}>{item.title} — {item.price},-</li>
+                {item.order.map(item => {
+                  return <li key={item.title}>{item.title}</li>
                 })}
               </ul>
-              <p>{item.totalprice},-</p>
-              {item.status.packaged && <p>Ready</p>}
-              {item.status.delivered && <p>Delivered</p>}
-              <StatusButton>Ready</StatusButton>
+              {item.packaged && <p>Ready</p>}
+              {item.delivered && <p>Delivered</p>}
+              <StatusButton onClick={() => handleClick(item.id)}>Ready</StatusButton>
               <StatusButton>Delivered</StatusButton>
             </OrderItem>
           )
@@ -62,8 +75,8 @@ Orders.getInitialProps = async () => {
 
   try {
     const ordersCollection = await firebaseInstance.firestore().collection('orders');
-    const ordersData = await ordersCollection.get();
-    // filter only non-delivered
+    const ordersData = await ordersCollection.where('delivered', '==', false).get();
+
     let ordersArray = [];
     ordersData.forEach(order => {
       ordersArray.push({

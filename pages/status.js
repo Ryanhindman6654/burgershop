@@ -51,7 +51,7 @@ Status.getInitialProps = async () => {
 
   try {
     const ordersCollection = await firebaseInstance.firestore().collection('orders');
-    const ordersData = await ordersCollection.get();
+    const ordersData = await ordersCollection.where('delivered', '==', false).get();
     // filter only non-delivered
     let ordersArray = [];
     ordersData.forEach(order => {

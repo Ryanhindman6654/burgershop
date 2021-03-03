@@ -1,5 +1,6 @@
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
+import React, {useState, useEffect} from 'react'
 
 const Title = styled.h1`
   font-size: 50px;
@@ -32,10 +33,64 @@ function Menu({ productsArray, error }) {
     return <p>En feil har oppstått: {error}</p>
   }
 
-  console.log(productsArray)
+  const [cart, setCart] = useState([])
+
+  function handleProductClick(productId) {
+
+    const newProduct = productsArray.find(product => product.id === productId)
+    setCart(prevCart => [...prevCart, newProduct] )
+    console.log(cart)
+
+  }
+
+  function handleOrderClick() {
+
+    const orderCollection = firebaseInstance.firestore().collection('orders');
+    orderCollection.doc().set({
+      user: 'marius.tetlie@gmail.com',
+      ordernumber: 1234,
+      order: cart.map(item => {
+        return (
+          {
+            title: item.title,
+            price: item.price
+          }
+        )
+      }),
+      packaged: false,
+      delivered: false,
+      // total_price: cart.forEach(item => item.price +)
+    })
+      .then(() => {
+        console.log('Lagt til');
+        console.log(orderCollection)
+        // state, en melding dukker opp om at det er lagt til
+        // brukeren blir sendt videre? —>
+      })
+      .catch(error => {
+        console.error(error);
+      })
+
+  }
 
   return (
     <main>
+      <Title>Cart</Title>
+      <div>
+        <ul>
+          {cart.map(item => {
+            return (
+              <li key={item}>
+                <h3>{item.title}</h3>
+                <button onClick={() => handleProductClick(item.id)}>+</button>
+              </li>
+            )
+          })}
+        </ul>
+        <button
+          onClick={() => handleOrderClick()}
+        >Send inn bestilling</button>
+      </div>
       <Title>Meny</Title>
       <MenuList>
         {productsArray.map(item => {
@@ -51,6 +106,9 @@ function Menu({ productsArray, error }) {
                 </p>
               }
               <p>{item.price},-</p>
+              <button onClick={() => handleProductClick(item.id)}>
+                Legg til
+              </button>
             </MenuItem>
           )
         })}
