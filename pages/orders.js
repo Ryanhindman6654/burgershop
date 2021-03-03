@@ -1,5 +1,6 @@
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
+import React, {useState, useEffect} from 'react'
 
 const Title = styled.h1`
   font-size: 50px;
@@ -28,29 +29,62 @@ function Orders({ ordersArray, error }) {
     return <p>En feil har oppstått: {error}</p>
   }
 
+  const [incompleteOrders, setIncompleteOrders] = useState([])
+
+  useEffect(() => {
+      let ref = firebaseInstance
+      .firestore()
+      .collection('orders')
+      //selects all documents where isReady value is false
+      .where('delivered', '==', false)
+      //listener acts whenever documents with this value changes
+      ref.onSnapshot((snapshot) => {
+          let data = []
+          snapshot.forEach((doc) => {
+              data.push({
+                  id: doc.id,
+                  ...doc.data()
+              })
+          })
+      setIncompleteOrders(data)
+      })   
+  }, [])
+
   console.log(ordersArray)
 
-  function handleClick(orderId) {
-
+  function handlePackagedClick(orderId, isOrderPackaged) {
     const orderCollection = firebaseInstance.firestore().collection('orders');
     orderCollection.doc(orderId).update({
-      packaged: true,
+      packaged: !isOrderPackaged,
     })
       .then(() => {
         console.log('Packaged');
-        console.log(orderCollection)
       })
       .catch(error => {
         console.error(error);
       })
+  };
 
-  }
+  // lag en funksjon som dekker begge
+
+  function handleDeliveredClick(orderId, isOrderDelivered) {
+    const orderCollection = firebaseInstance.firestore().collection('orders');
+    orderCollection.doc(orderId).update({
+      delivered: !isOrderDelivered,
+    })
+      .then(() => {
+        console.log('Delivered');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  };
 
   return (
     <main>
       <Title>Orders</Title>
       <OrderList>
-        {ordersArray.map(item => {
+        {incompleteOrders.map(item => {
           return (
             <OrderItem packaged={item.packaged} key={item.id}>
               <OrderTitle>{item.ordernumber}</OrderTitle>
@@ -60,9 +94,14 @@ function Orders({ ordersArray, error }) {
                 })}
               </ul>
               {item.packaged && <p>Ready</p>}
-              {item.delivered && <p>Delivered</p>}
-              <StatusButton onClick={() => handleClick(item.id)}>Ready</StatusButton>
-              <StatusButton>Delivered</StatusButton>
+              {!item.packaged && 
+              <StatusButton onClick={() => handlePackagedClick(item.id, item.packaged)}>
+                Packaged
+              </StatusButton>}
+              {item.packaged && 
+              <StatusButton onClick={() => handleDeliveredClick(item.id, item.delivered)}>
+                Delivered
+              </StatusButton>}
             </OrderItem>
           )
         })}

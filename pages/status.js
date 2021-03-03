@@ -1,16 +1,18 @@
 
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
+import React, {useState, useEffect} from 'react'
 
 const Title = styled.h1`
-  font-size: 50px;
   color: ${({ theme }) => theme.colors.primary};
   text-align: center;
 `
 const OrderList = styled.ul`
+  font-size: 50px;
   display: flex;
   flex-wrap: wrap;
 `
+
 const OrderItem = styled.li`
   list-style: none;
   padding: 1rem;
@@ -18,10 +20,12 @@ const OrderItem = styled.li`
   border-radius: 0.5em;
   background-color: lightgrey;
 `
-const OrderTitle = styled.h2`
+const MakingTitle = styled.h2`
+  font-size: 75px;
+`
+const ReadyTitle = styled.h2`
   font-size: 150px;
 `
-
 
 function Status({ ordersArray, error }) {
 
@@ -31,28 +35,64 @@ function Status({ ordersArray, error }) {
 
   console.log(ordersArray)
 
+  const [incompleteOrders, setIncompleteOrders] = useState([])
+
+    useEffect(() => {
+        let ref = firebaseInstance
+        .firestore()
+        .collection('orders')
+        //selects all documents where isReady value is false
+        .where('delivered', '==', false)
+        //listener acts whenever documents with this value changes
+        ref.onSnapshot((snapshot) => {
+            let data = []
+            snapshot.forEach((doc) => {
+                data.push({
+                    id: doc.id,
+                    ...doc.data()
+                })
+            })
+        setIncompleteOrders(data)
+        })   
+    }, [])
+
   return (
     <main>
       <Title>Ready</Title>
       <OrderList>
-        {ordersArray.map(item => {
+        {incompleteOrders.map(item => {
+          if (item.packaged) {
           return (
             <OrderItem key={item.id}>
-              <OrderTitle>{item.ordernumber}</OrderTitle>
+              <ReadyTitle>{item.ordernumber}</ReadyTitle>
             </OrderItem>
-          )
+          )}
         })}
       </OrderList>
+
+      <Title>Making</Title>
+      <OrderList>
+        {incompleteOrders.map(item => {
+          if (!item.packaged) {
+          return (
+            <OrderItem key={item.id}>
+              <MakingTitle>{item.ordernumber}</MakingTitle>
+            </OrderItem>
+          )}
+        })}
+      </OrderList>
+
     </main>
   );
 };
 
+/*
 Status.getInitialProps = async () => {
 
   try {
     const ordersCollection = await firebaseInstance.firestore().collection('orders');
     const ordersData = await ordersCollection.where('delivered', '==', false).get();
-    // filter only non-delivered
+
     let ordersArray = [];
     ordersData.forEach(order => {
       ordersArray.push({
@@ -70,5 +110,6 @@ Status.getInitialProps = async () => {
   }
 
 };
+*/
 
 export default Status;
