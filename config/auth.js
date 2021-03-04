@@ -1,14 +1,19 @@
-import {createContext, useContext, useEffect, useState} from 'react'
-import firebaseInstance from './firebase';
+import { 
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import firebaseInstance from './firebase'
 import nookies from 'nookies'
 
 const AuthContext = createContext({user: null});
 
 export function AuthProvider({children}) {
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
 
-  useEffect(() =>{
+  useEffect(() => {
     return firebaseInstance.auth().onIdTokenChanged( async (user) => {
       if(!user) {
         setUser(null);
@@ -33,7 +38,7 @@ export function AuthProvider({children}) {
 
   });
 
-  // Logic
+  // AuthContext => en wrapper vi trenger for å gi andre komponenter tilgang på contexten
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 

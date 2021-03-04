@@ -6,26 +6,30 @@ const Title = styled.h1`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.deep_red};
   text-align: center;
-`
+`;
+
 const MenuList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-`
+`;
+
 const MenuItem = styled.li`
   list-style: none;
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
   background-color: ${({vegetarian, theme}) => (vegetarian ? theme.colors.neon_green : theme.colors.pale_pink)};
-`
+`;
+
 const ProductTitle = styled.h3`
-`
+`;
+
 const ProductContentItem = styled.span`
   padding: 0.3em;
   margin-right: 1em;
   border: 1px solid black;
   border-radius: 0.5em;
-`
+`;
 
 function Menu({ productsArray, error }) {
 

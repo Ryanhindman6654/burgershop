@@ -18,8 +18,6 @@ const Signup = () => {
         setError(error.message)
         console.log('En feil har oppstått')
     }
-
-
   }
 
   return (
