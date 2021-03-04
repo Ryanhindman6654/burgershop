@@ -1,4 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import {AuthProvider} from '../config/auth'
 
 const GlobalStyle = createGlobalStyle`
 
@@ -45,12 +46,12 @@ const theme = {
 
 function MyApp({ Component, pageProps }) {
   return  (
-    <>
+    <AuthProvider>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </>
+    </AuthProvider>
   )
 }
 

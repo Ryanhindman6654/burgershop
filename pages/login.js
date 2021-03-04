@@ -18,8 +18,6 @@ const Login = () => {
         setError(error.message)
         console.log('En feil har oppstått')
     }
-
-
   }
 
   return (
@@ -37,7 +35,7 @@ const Login = () => {
           placeholder='Passord'
           onChange={e => setPassword(e.target.value)}
         />
-        <button type='submit'>Registrer deg</button>
+        <button type='submit'>Logg inn</button>
         {error && <p>{error}</p>}
       </form>
       <Link href='/signup'>Har du ikke en bruker? Registrer deg</Link>
