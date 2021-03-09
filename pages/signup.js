@@ -6,19 +6,33 @@ const Signup = () => {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [name, setName] = useState(null);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
 
     try {
-      await firebaseInstance.auth().createUserWithEmailAndPassword(email, password);
+      const user = await firebaseInstance.auth().createUserWithEmailAndPassword(email, password);
+      const uid = user.user.uid;
+
+      const userCollection = await firebaseInstance.firestore().collection('users')
+        .doc(uid).set({
+          email: email,
+          password: password,
+          name: name,
+        });
+
       console.log('Du har lagt til en bruker');
     } catch(error) {
         setError(error.message)
         console.log('En feil har oppstått')
     }
-  }
+
+
+  };
+
+  
 
   return (
     <div>
@@ -35,6 +49,13 @@ const Signup = () => {
           placeholder='Passord'
           onChange={e => setPassword(e.target.value)}
         />
+        <input 
+          type='text'
+          name='fullName'
+          placeholder='Navn'
+          onChange={e => setName(e.target.value)}
+        />
+
         <button type='submit'>Registrer deg</button>
         {error && <p>{error}</p>}
       </form>
