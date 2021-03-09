@@ -26,6 +26,7 @@ export function AuthProvider({children}) {
     });
   });
 
+
   // Sjekk hvert 10. minutt om en bruker er logget inn
 
   useEffect(() => {
@@ -47,9 +48,3 @@ export function AuthProvider({children}) {
 export const useAuth = () => {
   return useContext(AuthContext)
 }
-
-/* 
-
-  Flytt state til noe globalt
-
-*/

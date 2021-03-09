@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import firebaseInstance from '../config/firebase';
 import { useForm } from 'react-hook-form';
@@ -7,12 +8,15 @@ import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
 
+
 const schema = object().shape({
   email: string().required('Dette feltet er påkrevd'),
   password: string().required('Dette feltet er påkrevd')
 });
 
 const Login = () => {
+
+  const router = useRouter();
 
   const [firebaseError, setFirebaseError] = useState(null);
 
@@ -29,6 +33,7 @@ const Login = () => {
     try {
       await firebaseInstance.auth().signInWithEmailAndPassword(email, password);
       console.log('Du har blitt logget inn');
+      router.push('/profile');
     } catch(error) {
         setFirebaseError(error.message)
         console.log('En feil har oppstått')
