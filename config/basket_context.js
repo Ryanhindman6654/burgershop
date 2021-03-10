@@ -8,8 +8,6 @@ const BasketContext = createContext({
 
 });
 
-// provider — wrapperen du legger rundt det contexten skal nå
-
 export const Basket = ({children}) => {
 
   const [productLines, setProductLines] = useState([]);

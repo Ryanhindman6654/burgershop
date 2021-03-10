@@ -1,8 +1,10 @@
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
-import React, {useState} from 'react'
+import React from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import {useBasket} from '../config/basket_context'
+import { useAuth } from '../config/auth'
 
 function Menu({ productsArray, error }) {
 
@@ -11,6 +13,7 @@ function Menu({ productsArray, error }) {
   }
 
   const basket = useBasket();
+  const userContext = useAuth();
 
   // const [cart, setCart] = useState([])
 
@@ -18,9 +21,10 @@ function Menu({ productsArray, error }) {
 
     const orderCollection = firebaseInstance.firestore().collection('orders');
     orderCollection.doc().set({
-      user: 'marius.tetlie@gmail.com',
+      user: userContext.email,
+      userid: userContext.uid,
       ordernumber: 1234,
-      order: cart.map(item => {
+      order: basket.productLines.map(item => {
         return (
           {
             title: item.title,
@@ -31,7 +35,7 @@ function Menu({ productsArray, error }) {
       }),
       packaged: false,
       delivered: false,
-      // total_price: cart.forEach(item => item.price +)
+      total: basket.total
     })
       .then(() => {
         console.log('Lagt til');
@@ -44,14 +48,6 @@ function Menu({ productsArray, error }) {
       })
 
   };
-
-  // function handleProductClick(productId) {
-
-  //   const newProduct = productsArray.find(product => product.id === productId)
-  //   setCart(prevCart => [...prevCart, newProduct] )
-  //   console.log(cart)
-
-  // };
 
   return (
     <main>
@@ -78,9 +74,8 @@ function Menu({ productsArray, error }) {
           })}
         </ul>
         <p>Total: {basket.total}</p>
-        <button
-          onClick={() => handleOrderClick()}
-        >Send inn bestilling</button>
+        {userContext && <button onClick={() => handleOrderClick()}>Send inn bestilling</button>}
+        {!userContext && <button><Link href='/login'>Logg inn</Link></button>}
       </div>
       
       <PageTitle>Meny</PageTitle>
@@ -99,11 +94,14 @@ function Menu({ productsArray, error }) {
               }
               <p>{item.price},-</p>
               <button onClick={() => {
+                // const existing = basket.productLines.find(exproduct => exproduct.id === item.id);
+                
                 const newProduct = productsArray.find(product => product.id === item.id)
                 basket.addProductLine(newProduct)
                 }}>
                 Legg til
               </button>
+
             </MenuItem>
           )
         })}
@@ -150,6 +148,9 @@ const MenuList = styled.ul`
 `;
 
 const MenuItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   list-style: none;
   padding: 1rem;
   margin: 1rem;
