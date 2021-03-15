@@ -40,9 +40,6 @@ const Login = () => {
     };
  };
 
-  // useEffect(() => {
-  //   console.log('errors', errors);
-  // }, [errors]);
 
   return (
     <div>

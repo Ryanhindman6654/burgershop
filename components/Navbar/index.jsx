@@ -22,13 +22,13 @@ const Navbar = () => {
         <NavLogo href="/">Burgere</NavLogo>
         <NavMenu>
           <NavItem>
-            <NavLink href="/">Meny</NavLink>
+            <NavLink href="/menu">Meny</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink href="/">Log inn</NavLink>
+            <NavLink href="/login">Log inn</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink href="/">Kurv</NavLink>
+            <NavLink href="/menu">Kurv</NavLink>
           </NavItem>
         </NavMenu>
       </NavbarContainer>
@@ -40,7 +40,7 @@ export default Navbar;
 
 const Nav = styled.nav`
   background: #000;
-  height: 80px;
+  /* height: 80px;
   margin-top: -80px;
   display: flex;
   justify-content: center;
@@ -52,12 +52,13 @@ const Nav = styled.nav`
 
   @media screen and (max-width: 960px) {
     transition: 0.8s all ease;
-  }
+  } */
 `
 
 export const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 80px;
   z-index: 1;
   width: 100%;
@@ -75,6 +76,10 @@ export const NavLogo = styled(Link)`
   margin-left: 24px;
   font-weight: bold;
   text-decoration: none;
+
+  &:visited {
+    color: #fff;
+  }
 `
 
 export const NavMenu = styled.ul`

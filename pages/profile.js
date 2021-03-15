@@ -3,6 +3,9 @@ import firebaseInstance from '../config/firebase'
 import { useRouter } from 'next/router'
 import { useAuth } from '../config/auth'
 
+import Navbar from '../components/Navbar'
+
+
 const Profile = () => {
 
   const router = useRouter();
@@ -24,6 +27,7 @@ const Profile = () => {
 
   return (
     <div>
+      <Navbar />
       <p>Profile</p>
       <button onClick={handleSignout}>Logg ut</button>
       {userContext && (

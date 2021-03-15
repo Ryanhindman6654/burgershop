@@ -1,6 +1,7 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import {AuthProvider} from '../config/auth'
 import {Basket} from '../config/basket_context'
+import {theme} from '../config/theme'
 
 
 const GlobalStyle = createGlobalStyle`
@@ -35,27 +36,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const theme = {
-  colors: {
-    primary: '#5FB37D',
-    neon_green: '#66FFAC',
-    light_green: '#A4FFC5',
-    deep_red: '#B3423D',
-    pale_pink: '#FFCAC7',
-    background: '#f2f2f2'
-  },
-}
-
 function MyApp({ Component, pageProps }) {
   return  (
-    <AuthProvider>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <GlobalStyle />
         <Basket>
           <Component {...pageProps} />
-        </Basket>
-      </ThemeProvider>
-    </AuthProvider>
+        </Basket>  
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

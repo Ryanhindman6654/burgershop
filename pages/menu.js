@@ -5,6 +5,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import {useBasket} from '../config/basket_context'
 import { useAuth } from '../config/auth'
+import { useRouter } from 'next/router'
+
+import Navbar from '../components/Navbar'
 
 function Menu({ productsArray, error }) {
 
@@ -12,10 +15,9 @@ function Menu({ productsArray, error }) {
     return <p>En feil har oppstått: {error}</p>
   }
 
+  const router = useRouter();
   const basket = useBasket();
   const userContext = useAuth();
-
-  // const [cart, setCart] = useState([])
 
   function handleOrderClick() {
 
@@ -25,23 +27,21 @@ function Menu({ productsArray, error }) {
       userid: userContext.uid,
       ordernumber: 1234,
       order: basket.productLines.map(item => {
-        return (
-          {
-            title: item.title,
-            price: item.price,
-            amount: 8
-          }
-        )
+        return ({
+          title: item.title,
+          price: item.price,
+          amount: 8
+        })
       }),
       packaged: false,
       delivered: false,
-      total: basket.total
+      total: basket.total,
+      time: Date.now(),
     })
-      .then(() => {
+      .then(doc => {
         console.log('Lagt til');
-        console.log(orderCollection)
-        // state, en melding dukker opp om at det er lagt til
-        // brukeren blir sendt videre? —>
+        console.log(doc.data())
+        // router.push(`/orders/${doc.key}`);
       })
       .catch(error => {
         console.error(error);
@@ -51,6 +51,7 @@ function Menu({ productsArray, error }) {
 
   return (
     <main>
+      
       <Head>
         <title>Basket</title>
         <link rel="icon" href="/favicon.ico" />
@@ -95,7 +96,6 @@ function Menu({ productsArray, error }) {
               <p>{item.price},-</p>
               <button onClick={() => {
                 // const existing = basket.productLines.find(exproduct => exproduct.id === item.id);
-                
                 const newProduct = productsArray.find(product => product.id === item.id)
                 basket.addProductLine(newProduct)
                 }}>

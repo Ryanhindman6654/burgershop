@@ -110,6 +110,8 @@ function Orders({ ordersArray, error }) {
   );
 };
 
+// trengs dette?
+
 Orders.getInitialProps = async () => {
 
   try {
