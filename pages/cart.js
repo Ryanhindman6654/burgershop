@@ -41,7 +41,7 @@ function Menu({ productsArray, error }) {
       .then(doc => {
         console.log('Lagt til');
         console.log(doc.data())
-        // router.push(`/orders/${doc.key}`);
+        router.push(`/orders/RdRo8uSmnFl8259FU3Go`);
       })
       .catch(error => {
         console.error(error);
@@ -51,43 +51,47 @@ function Menu({ productsArray, error }) {
 
   return (
     <>
+      
       <Head>
-        <title>Meny</title>
+        <title>Handlekurv</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
       <Navbar />
-
+      
       <Container>
-        <PageTitle>Meny</PageTitle>
-        <Link href='cart'><NavLink>Til bestilling</NavLink></Link>
+        <PageTitle>Handlekurv</PageTitle>
+        <Link href='menu'>
+          <NavLink>Tilbake til meny</NavLink>
+        </Link>
         <MenuList>
-          {productsArray.map(item => {
+          {basket.productLines.map(item => {
             return (
-              <MenuItem vegetarian={item.vegetarian} key={item.id}>
+              <MenuItem key={item.id}>
                 <ProductTitle>{item.title}</ProductTitle>
-                {item.vegetarian && <ProductContentVeg>veggie</ProductContentVeg>}
-                {item.contents && 
-                  <>
-                    {item.contents.map(item => {
-                      return <ProductContentItem key={item}>{item}</ProductContentItem>
-                    })}
-                  </>
-                }
-                <p>{item.price},-</p>
-                <Button onClick={() => {
-                  // const existing = basket.productLines.find(exproduct => exproduct.id === item.id);
+                <ProductTitle>{item.price},-</ProductTitle>
+                <InlineButton onClick={() => {
                   const newProduct = productsArray.find(product => product.id === item.id)
                   basket.addProductLine(newProduct)
-                  }}>
-                  Legg til
-                </Button>
-
+                }}>
+                  +
+                </InlineButton>
+                <ProductTitle>1</ProductTitle>
+                <InlineButton onClick={(e, i) => {
+                  basket.removeProductLine(e, i)
+                }}>
+                  -
+                </InlineButton>
               </MenuItem>
             )
           })}
         </MenuList>
+        <ProductTitle>Total: {basket.total}</ProductTitle>
+        {userContext && <Button onClick={() => handleOrderClick()}>Send inn bestilling</Button>}
+        {!userContext && <Button><Link href='/login'>Logg inn</Link></Button>}
       </Container>
+      
+
     </>
   );
 };
@@ -131,11 +135,10 @@ const NavLink = styled.button`
 
   &:hover {
 
-    transform: translateX(10px);
+    transform: translateX(-10px);
 
   }
 `;
-
 
 const Container = styled.div`
   padding-top: 100px;
@@ -147,6 +150,25 @@ const Container = styled.div`
   align-items: center;
   background: ${({theme}) => theme.colors.light_green};
   color: ${({ theme }) => theme.colors.text_dark};
+`;
+
+const InlineButton = styled.button`
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  color: ${({theme}) => theme.colors.text_dark};
+  border: solid 1.5px ${({theme}) => theme.colors.text_dark};
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  margin: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: ${({theme}) => theme.colors.text_dark};
+    color: ${({theme}) => theme.colors.text_light};
+  }
 `;
 
 const Button = styled.button`
@@ -186,25 +208,15 @@ const MenuItem = styled.li`
   align-items: center;
   list-style: none;
   margin: 0.5rem;
-  border-bottom: solid 2px ${({theme}) => theme.colors.text_dark};
+  border-bottom: solid 1.5px ${({theme}) => theme.colors.text_dark};
 `;
 
 const ProductTitle = styled.h3`
 `;
 
-const ProductContentVeg = styled.span`
-  background: ${({ theme }) => theme.colors.text_light};
-  color: ${({ theme }) => theme.colors.text_dark};
-  padding: 0.3em;
-  margin-right: 0.3em;
-  border-radius: 0.5em;
-
-
-`;
-
 const ProductContentItem = styled.span`
-  border: 1.5px solid ${({ theme }) => theme.colors.text_dark};
   padding: 0.3em;
-  margin-right: 0.3em;
+  margin-right: 1em;
+  border: 1px solid black;
   border-radius: 0.5em;
 `;

@@ -1,6 +1,7 @@
 import firebaseInstance from '../config/firebase'
+import styled from 'styled-components'
 
-export default function Reciept({ order, error }) {
+export default function Reciept({ order, pageId, error }) {
 
   if (error !== undefined) {
     return (
@@ -9,40 +10,108 @@ export default function Reciept({ order, error }) {
   }
 
   return (
-    <>
-      <h1>Ordre</h1>
-      <h2>Din bestilling {order.ordernumber}</h2>
-      <p>Dato</p>
-      <div>
-        <ul>
-          {order.content.map(item => {
-            return(
-              <li key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.price}</p>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      <div>
-        {
-          (order.status.delivered === true) 
-          ? 'Ordren er levert.' 
-          : (order.status.packaged === true)
-          ? 'Ordren er klar for henting'
-          : 'Ordren er på vei'
-        }
-      </div>
-    </>
+    <Container>
+      <Title>Din bestilling</Title>
+      <OrderItem>
+        <OrderTitle><span>Ordrenummer</span><br />{order.ordernumber}</OrderTitle>
+        <p>Dato {pageId}</p>
+          <ul>
+            {order.order.map(item => {
+              return(
+                <li key={item.title}>
+                  <p>{item.title}</p> <p>{item.price}</p>
+                </li>
+              )
+            })}
+            <li className='total'><p>Total</p> <p>{order.total}</p></li>
+          </ul>
+        <div>
+          {
+            (order.delivered === true) 
+            ? 'Ordren er levert.' 
+            : (order.packaged === true)
+            ? 'Ordren er klar for henting'
+            : 'Ordren er på vei'
+          }
+        </div>
+      </OrderItem>
+    </Container>
   )
 }
 
-Reciept.getInitialProps = async () => {
+const Container = styled.div`
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: ${({theme}) => theme.colors.light_green};
+  color: ${({ theme }) => theme.colors.text_dark};
+`;
+
+const Title = styled.h1`
+  font-size: 50px;
+  text-align: center;
+`;
+const OrderTitle = styled.h3`
+  text-align: center;
+  font-weight: 900;
+  font-size: 2.5rem;
+
+  span {
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+`;
+
+const OrderItem = styled.div`
+  list-style: none;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 33%;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.5em;
+  color: ${({packaged, theme}) => (packaged ? theme.colors.text_light : theme.colors.dark)};
+  background-color: ${({packaged, theme}) => (packaged ? theme.colors.text_dark : theme.colors.text_light)};
+
+  ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 1rem;
+    width: 100%;
+
+    li {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 0.5rem;
+      border-bottom: solid 1px ${({packaged, theme}) => (packaged ? theme.colors.text_light : theme.colors.dark)};
+    
+      p {
+        padding: 0;
+        margin: 0;
+      }
+    }
+    .total {
+        /* padding-top: 1rem; */
+        border: none;
+        font-weight: 900;
+      }
+  }
+`
+
+Reciept.getInitialProps = async ({ query }) => {
 
   try {
     const collection = await firebaseInstance.firestore().collection('orders');
-    const document = await collection.doc('FcRJvAv1lxunHCgvLD7S').get();
+    const document = await collection.doc('bOIERnzejVAhzjQTOrq4').get();
 
     if (document.exists !== true) {
       throw new Error('Ordren finnes ikke.')
@@ -53,7 +122,9 @@ Reciept.getInitialProps = async () => {
       ...document.data()
     };
 
-    return { order };
+    const pageId = query.id;
+
+    return { order, pageId };
 
   } catch (error) {
     return {

@@ -11,10 +11,15 @@ const BasketContext = createContext({
 export const Basket = ({children}) => {
 
   const [productLines, setProductLines] = useState([]);
-
   const [total, setTotal] = useState(0);
 
   const addProductLine = (newProduct) => {
+    setProductLines([...productLines, newProduct])
+    console.log(productLines)
+  };
+
+  const removeProductLine = (e, i) => {
+    slice
     setProductLines([...productLines, newProduct])
     console.log(productLines)
   };
@@ -27,7 +32,7 @@ export const Basket = ({children}) => {
   }, [productLines]);
 
   return (
-    <BasketContext.Provider value={{productLines, addProductLine, total}}>
+    <BasketContext.Provider value={{productLines, addProductLine, removeProductLine, total}}>
       {children}
     </BasketContext.Provider>
   )
