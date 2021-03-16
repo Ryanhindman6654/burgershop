@@ -1,113 +1,173 @@
-import React, {useEffect} from 'react'
-import { useRouter } from 'next/router'
+import React, {useState, useEffect} from 'react'
 import { useAuth } from '../../config/auth'
+import { useBasket } from '../../config/basket_context'
+
 import Link from 'next/link'
 
 import styled from 'styled-components'
 
 const Navbar = () => {
 
-  const router = useRouter();
   const userContext = useAuth();
+  const basket = useBasket();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     console.log('The context', userContext);
   }, [userContext]);
 
-
-
   return (
     <Nav>
-      <NavbarContainer>
-        <NavLogo href="/">Burgere</NavLogo>
-        <NavMenu>
-          <NavItem>
-            <NavLink href="/menu">Meny</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="/login">Log inn</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="/menu">Kurv</NavLink>
-          </NavItem>
-        </NavMenu>
-      </NavbarContainer>
+      <Container>
+        <Logo href="/">Børres Burgere</Logo>
+        <Hamburger onClick={()=>setIsOpen(!isOpen)}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </Hamburger>
+        <Menu isOpen={isOpen}>
+          <LinkWrapper>
+            {!userContext && <MenuLink><Link href="login">Log inn</Link></MenuLink>}
+            {!userContext && <MenuLink><Link href="login">Registrer bruker</Link></MenuLink>}
+            {userContext && <MenuLink><Link href="profile">{userContext.email}</Link></MenuLink>}
+            <MenuLink><Link href="menu">Meny</Link></MenuLink>
+            <Button>
+              <Link href="/signup">
+                Handlekurv
+              </Link>
+              {' '}
+              <span>
+                {(basket.productLines.length > 1) && basket.productLines.length}
+                </span>
+            </Button>
+          </LinkWrapper>
+        </Menu>
+      </Container>
     </Nav>
   );
 };
 
+
 export default Navbar;
 
-const Nav = styled.nav`
-  background: #000;
-  /* height: 80px;
-  margin-top: -80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+const Logo = styled(Link)`
+  font-weight: 900;
+  color: ${({theme}) => theme.colors.text_dark};
+  cursor: pointer;
+`;
 
-  @media screen and (max-width: 960px) {
-    transition: 0.8s all ease;
-  } */
-`
-
-export const NavbarContainer = styled.div`
+const Nav = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
-  z-index: 1;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+`;
+
+const Container = styled.div`
   width: 100%;
-  padding: 0 24px;
-  max-width: 1100px;
-`
-
-export const NavLogo = styled(Link)`
-  color: #fff;
-  justify-self: flex-start;
-  cursor: pointer;
-  font-size: 1.5rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-left: 24px;
-  font-weight: bold;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+`;
+
+const Menu = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    box-shadow: -4px 8px 15px 1 rgba(0,0,0,0.07);
+    max-height: ${({isOpen}) => isOpen ? '300px' : '0px'};
+    width: 100%;
+    transition: max-height 0.3s ease-in-out;
+
+    background: rgba(255, 255, 255, 0.9);
+      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+        --webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.4);
+      }
+  }
+`;
+
+const LinkWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 1.5rem 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const MenuLink = styled.a`
   text-decoration: none;
+  color: ${({theme}) => theme.colors.text_dark};
+  font-size: 0.9rem;
+  padding: 0.7rem 1.5rem;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  font-weight: 500;
 
-  &:visited {
-    color: #fff;
+  &:hover {
+    background: ${({theme}) => theme.colors.text_light};
   }
-`
+`;
 
-export const NavMenu = styled.ul`
-  display: flex;
-  align-items: center;
-  list-style: none;
-  text-align: center;
-  margin-right: -22px;
+const Button = styled.button`
 
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`
-
-export const NavItem = styled.li`
-  height: 80px;
-`
-
-export const NavLink = styled(Link)`
-  color: #fff;
-  display: flex;
-  align-items: center;
-  text-decoration: center;
-  padding: 0 1rem;
-  height: 100%;
+  font-size: 0.9rem;
+  background-color: ${({theme}) => theme.colors.text_dark};
+  border: none;
+  padding: 0.8rem 1.1rem;
+  color: ${({theme}) => theme.colors.text_light};
+  border-radius: 1rem;
+  box-shadow: 0px 12px 24px -7px ${({theme}) => theme.colors.text_dark};
+  transition: all 0.2s ease-in-out;
+  margin-left: 0.5rem;
   cursor: pointer;
 
-  &.active {
-    border-bottom: 3px solid #01bf71;
+  &:hover {
+    box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+    transform: translateY(-5px);
   }
-`
+
+  span {
+    font-weight: 900;
+  }
+
+`;
+
+const Hamburger = styled.div`
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+
+  span {
+    height: 2px;
+    width: 25px;
+    background-color: ${({theme}) => theme.colors.text_dark};
+    margin-bottom: 4px;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;

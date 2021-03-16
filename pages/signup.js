@@ -3,6 +3,9 @@ import Link from 'next/link'
 import firebaseInstance from '../config/firebase';
 import { useRouter } from 'next/router'
 
+import Navbar from '../components/Navbar'
+
+
 
 const Signup = () => {
 
@@ -36,6 +39,7 @@ const Signup = () => {
 
   return (
     <div>
+      <Navbar />
       <form onSubmit={handleSubmit}>
         <input 
           type='email' 

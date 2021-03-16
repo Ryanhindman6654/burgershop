@@ -8,6 +8,7 @@ import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
 
+import Navbar from '../components/Navbar'
 
 const schema = object().shape({
   email: string().required('Dette feltet er påkrevd'),
@@ -43,6 +44,7 @@ const Login = () => {
 
   return (
     <div>
+      <Navbar />
       <Container>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
