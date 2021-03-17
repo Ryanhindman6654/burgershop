@@ -40,8 +40,7 @@ function Menu({ productsArray, error }) {
     })
       .then(doc => {
         console.log('Lagt til');
-        console.log(doc.data())
-        router.push(`/orders/RdRo8uSmnFl8259FU3Go`);
+        router.push('/orders/RdRo8uSmnFl8259FU3Go');
       })
       .catch(error => {
         console.error(error);

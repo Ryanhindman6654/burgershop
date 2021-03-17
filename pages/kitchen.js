@@ -76,7 +76,7 @@ const Container = styled.div`
 `;
 
 
-function Orders({ ordersArray, error }) {
+function Kitchen({ ordersArray, error }) {
 
   if (error !== undefined) {
     return <p>En feil har oppstått: {error}</p>
@@ -162,7 +162,7 @@ function Orders({ ordersArray, error }) {
 
 // trengs dette?
 
-Orders.getInitialProps = async () => {
+Kitchen.getInitialProps = async () => {
 
   try {
     const ordersCollection = await firebaseInstance.firestore().collection('orders');
@@ -186,4 +186,4 @@ Orders.getInitialProps = async () => {
 
 };
 
-export default Orders;
+export default Kitchen;

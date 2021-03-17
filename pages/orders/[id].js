@@ -13,10 +13,19 @@ export default function Reciept({ order, pageId, error }) {
     <Container>
       <Title>Din bestilling</Title>
       <OrderItem>
-      <p>{order.id}</p>
         <OrderTitle><span>Hentenummer</span><br />{order.ordernumber}</OrderTitle>
         
-        <p>{Date(order.time)}</p>
+        <StatusBar packaged={order.packaged}>
+          {
+            (order.delivered === true) 
+            ? 'Ordren er levert.' 
+            : (order.packaged === true)
+            ? 'Ordren er klar for henting'
+            : 'Ordren er på vei'
+          }
+        </StatusBar>
+
+        
           <ul>
             {order.order.map(item => {
               return(
@@ -27,20 +36,25 @@ export default function Reciept({ order, pageId, error }) {
             })}
             <li className='total'><p>Total</p> <p>{order.total}</p></li>
           </ul>
-        <div>
-          
-          {
-            (order.delivered === true) 
-            ? 'Ordren er levert.' 
-            : (order.packaged === true)
-            ? 'Ordren er klar for henting'
-            : 'Ordren er på vei'
-          }
-        </div>
+          <p>{order.id}</p>
+
+          <p>{Date(order.time)}</p>
+
       </OrderItem>
     </Container>
   )
 }
+const StatusBar = styled.p`
+  background: ${({packaged, theme}) => (packaged ? theme.colors.neon_green : theme.colors.text_dark)};
+  color: ${({packaged, theme}) => (packaged ? theme.colors.text_dark : theme.colors.text_light)};
+  border: none;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1rem;
+  /* box-shadow: 0px 12px 24px -7px ${({theme}) => theme.colors.text_dark}; */
+  transition: all 0.3s ease-in-out;
+  margin: 0.5rem;
+  justify-self: flex-end;
+`;
 
 const Container = styled.div`
   min-height: 100vh;
