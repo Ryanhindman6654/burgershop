@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
+import {useBasket} from '../config/basket_context'
 
 import Navbar from '../components/Navbar'
 
@@ -18,6 +19,7 @@ const schema = object().shape({
 const Login = () => {
 
   const router = useRouter();
+  const basket = useBasket();
 
   const [firebaseError, setFirebaseError] = useState(null);
 
@@ -33,8 +35,10 @@ const Login = () => {
 
     try {
       await firebaseInstance.auth().signInWithEmailAndPassword(email, password);
-      console.log('Du har blitt logget inn');
-      router.push('/profile');
+      (basket.productLines.length > 0)
+        ? router.push('/cart')
+        : router.push('/menu')
+        ;
     } catch(error) {
         setFirebaseError(error.message)
         console.log('En feil har oppstått')
@@ -43,11 +47,10 @@ const Login = () => {
 
 
   return (
-    <div>
+    <>
       <Navbar />
       <Container>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <InputContainer>
             <StyledInput 
               type='email' 
               name='email' 
@@ -55,9 +58,7 @@ const Login = () => {
               required
               ref={register}
             />
-            <Status />
-          </InputContainer>
-          <InputContainer>
+           
             <StyledInput 
               type='password' 
               name='password' 
@@ -65,13 +66,12 @@ const Login = () => {
               required
               ref={register}
             />
-            <Status />
-          </InputContainer>
+            
           {firebaseError && <p>{firebaseError}</p>}
           <button type='submit'>Logg inn</button>
           <Terms>
-            By signing in, I agree to the Privacy Policy <br />
-            and Terms of Service
+            Ved å bestille aksepterer du vår <br />
+            <span>personvernerklæring</span>.
           </Terms>
         </Form>
         <h4>
@@ -81,57 +81,39 @@ const Login = () => {
           </Link>
         </h4>
       </Container>
-    </div>
+    </>
   );
 };
 
 const StyledInput = styled.input`
-  width: 80%;
+  width: 75%;
   max-width: 350px;
   min-width: 250px;
   height: 40px;
   border: none;
   margin: 0.5rem 0;
-  background-color: #f5f5f5;
-  box-shadow: 0px 14px 9px -15px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.text_light};
+  color: ${({ theme }) => theme.colors.text_dark};
+  border-radius: 1rem;
   padding: 0 1rem;
   transition: all 0.2s ease-in;
 
   &:hover {
-    transform: translateY(-3px);
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Status = styled.div`
-  height: 10px;
-  width: 10px;
-  background-color: #9d9d9d;
-  border-radius: 50%;
-  margin-left: 1rem;
-
-  ${StyledInput}:focus + & {
-    background-color: #FFA689;
-  }
-  ${StyledInput}:invalid + & {
-    background-color: #FE2F75;
-  }
-  ${StyledInput}:valid + & {
-    background-color: #70EDB9;
+    box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+    transform: translateY(-5px);
   }
 `;
 
 const Terms = styled.p`
   padding: 0 1rem;
   text-align: center;
-  font-size: 10px;
-  color: #808080;  
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.text_dark};
+
+  span {
+    text-decoration: underline;
+  }
+
 `;
 
 const Form = styled.form`
@@ -149,46 +131,48 @@ const Form = styled.form`
     width: 75%;
     max-width: 350px;
     min-width: 250px;
-    height: 40px;
-    border: none;
     margin: 1rem 0;
-    box-shadow: 0px 14px 9px -15px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    background-color: #70EDB9;
-    color: #fff;
-    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    background-color: ${({theme}) => theme.colors.text_dark};
+    border: none;
+    padding: 0.8rem 1.1rem;
+    color: ${({theme}) => theme.colors.text_light};
+    border-radius: 1rem;
+    box-shadow: 0px 12px 24px -7px ${({theme}) => theme.colors.text_dark};
+    transition: all 0.2s ease-in-out;
+    margin-left: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease-in;
 
     &:hover {
-      transform: translateY(-3px);
+      box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+      transform: translateY(-5px);
     }
   }
 `;
 
 const Container = styled.div`
+  min-height: 100vh;
   width: 100vw;
-  position: absolute;
-  padding: 0;
-  backdrop-filter: blur(35px);
-  background-color: rgba(255, 255, 255, 0.6);
-  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-evenly;
-  padding: 0.2rem;
+  background: ${({theme}) => theme.colors.light_green};
+  color: ${({ theme }) => theme.colors.text_dark};
 
   h4 {
-    color: #808080;
-    font-weight: bold;
-    font-size: 13px;
+    color: ${({ theme }) => theme.colors.text_dark};
+    font-size: 0.9rem;
     margin-top: 2rem;
+    font-weight: 400;
+
+
 
     span {
-      color: #ff8d8d;
       cursor: pointer;
-
+      text-decoration: underline;
+      font-weight: 900;
     }
   }
 `;

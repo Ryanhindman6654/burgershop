@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 
 const HeroText = () => {
   return (
@@ -10,8 +11,8 @@ const HeroText = () => {
       <h1>Burgere</h1>
       <h5>Laget med råvarer fra Oslo og Viken</h5>
       <ButtonContainer>
-        <button className='readmore'>Se meny</button>
-        <button>Logg inn</button>
+        <Link href='/menu'><button className='readmore'>Se meny</button></Link>
+        <Link href='/login'><button>Logg inn</button></Link>
       </ButtonContainer>
     </Container>
   )

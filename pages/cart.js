@@ -87,6 +87,7 @@ function Menu({ productsArray, error }) {
         </MenuList>
         <ProductTitle>Total: {basket.total}</ProductTitle>
         {userContext && <Button onClick={() => handleOrderClick()}>Send inn bestilling</Button>}
+        {!userContext && <ProductTitle>Logg inn for å bestille</ProductTitle>}
         {!userContext && <Button><Link href='/login'>Logg inn</Link></Button>}
       </Container>
       

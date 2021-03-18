@@ -75,39 +75,3 @@ const Left = styled.div`
     width: 100%;
   }
 `;
-
-// const Title = styled.h1`
-//   font-size: 50px;
-//   color: ${({ theme }) => theme.colors.deep_red};
-//   text-align: center;
-// `;
-
-// const Button = styled.button`
-//   @media (min-width: ${(props)=>props.theme.breakpoints[0]}) {
-//     display: none;
-//   }
-// `;
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Navbar />
-//       <Box width='100vw'>
-//         <Box 
-//           bg='#fafafa' 
-//           mb={2}
-//           p={3}
-//           height='300px'
-//           width={[1, 1/2, 1/4]}
-//         >
-//           Hello world
-//           <Button>Heisann</Button>
-//         </Box>
-//         <Box bg='#fafafa' mt={[2]} height='300px' width={[1, 1/2, 1/4]}>
-//           Hello world
-//         </Box>
-//       </Box>
-//       <Title>Børres Burgere</Title>
-//     </>
-//   )
-// }

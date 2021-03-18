@@ -1,10 +1,7 @@
 import firebaseInstance from '../../config/firebase'
 import styled from 'styled-components'
-import React, {useState, useEffect} from 'react'
-import Navbar from '../../components/Navbar'
 
-
-export default function Reciept({ myOrder, pageId, error }) {
+export default function Reciept({ order, pageId, error }) {
 
   if (error !== undefined) {
     return (
@@ -12,58 +9,38 @@ export default function Reciept({ myOrder, pageId, error }) {
     )
   }
 
-  // const [myOrder, setMyOrder] = useState([])
-
-  // useEffect(() => {
-  //     let ref = firebaseInstance
-  //     .firestore()
-  //     .collection('orders')
-  //     .doc(pageId);
-
-  //     ref.onSnapshot((docSnapshot) => {
-  //       let orderData = {
-  //         id: docSnapshot.id,
-  //         ...docSnapshot.data()
-  //       }
-  //       setMyOrder(orderData)
-  //       console.log(myOrder)
-  //     });
-  // }, [])
-
   return (
-    <>
-      
-      <Container>
-      {/* <Navbar /> */}
-        <Title>Din bestilling</Title>
-        <OrderItem>
-          <OrderTitle><span>Hentenummer</span><br />{myOrder.ordernumber}</OrderTitle>
-          
-          <StatusBar packaged={myOrder.packaged}>
-            {
-              (myOrder.delivered === true) 
-              ? 'Ordren er levert.' 
-              : (myOrder.packaged === true)
-                ? 'Ordren er klar for henting'
-                : 'Ordren er på vei'
-            }
-          </StatusBar>
+    <Container>
+      <Title>Din bestilling</Title>
+      <OrderItem>
+        <OrderTitle><span>Hentenummer</span><br />{order.ordernumber}</OrderTitle>
+        
+        <StatusBar packaged={order.packaged}>
+          {
+            (order.delivered === true) 
+            ? 'Ordren er levert.' 
+            : (order.packaged === true)
+              ? 'Ordren er klar for henting'
+              : 'Ordren er på vei'
+          };
+        </StatusBar>
+
+        
           <ul>
-            {myOrder.order.map(item => {
+            {order.order.map(item => {
               return(
                 <li key={item.title}>
                   <p>{item.title}</p> <p>{item.price}</p>
                 </li>
               )
             })}
-            <li className='total'><p>Total</p> <p>{myOrder.total}</p></li>
+            <li className='total'><p>Total</p> <p>{order.total}</p></li>
           </ul>
-          <p>{myOrder.id}<br />{myOrder.user}</p>
-          <p>{Date(myOrder.time)}</p>
+          <p>{order.id}<br />{order.user}</p>
+          <p>{Date(order.time)}</p>
 
-        </OrderItem>
-      </Container>
-    </>
+      </OrderItem>
+    </Container>
   )
 }
 const StatusBar = styled.p`
@@ -147,7 +124,7 @@ const OrderItem = styled.div`
         font-weight: 900;
       }
   }
-`;
+`
 
 Reciept.getInitialProps = async ({ query }) => {
 
@@ -162,12 +139,12 @@ Reciept.getInitialProps = async ({ query }) => {
       throw new Error('Ordren finnes ikke.')
     };
 
-    const myOrder = {
+    const order = {
       id: document.id,
       ...document.data()
     };
 
-    return { myOrder, pageId };
+    return { order, pageId };
 
   } catch (error) {
     return {

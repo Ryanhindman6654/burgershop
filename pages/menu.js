@@ -17,37 +17,7 @@ function Menu({ productsArray, error }) {
 
   const router = useRouter();
   const basket = useBasket();
-  const userContext = useAuth();
 
-  function handleOrderClick() {
-
-    const orderCollection = firebaseInstance.firestore().collection('orders');
-    orderCollection.doc().set({
-      user: userContext.email,
-      userid: userContext.uid,
-      ordernumber: 1234,
-      order: basket.productLines.map(item => {
-        return ({
-          title: item.title,
-          price: item.price,
-          amount: 8
-        })
-      }),
-      packaged: false,
-      delivered: false,
-      total: basket.total,
-      time: Date.now(),
-    })
-      .then(doc => {
-        console.log('Lagt til');
-        console.log(doc.data())
-        // router.push(`/orders/${doc.key}`);
-      })
-      .catch(error => {
-        console.error(error);
-      })
-
-  };
 
   return (
     <>
