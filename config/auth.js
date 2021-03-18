@@ -13,6 +13,8 @@ export function AuthProvider({children}) {
 
   const [user, setUser] = useState();
 
+  const [userData, setUserData] = useState();
+
   useEffect(() => {
     return firebaseInstance.auth().onIdTokenChanged( async (user) => {
       if(!user) {
@@ -26,6 +28,24 @@ export function AuthProvider({children}) {
     });
   });
 
+  useEffect(() => {
+    if(user) {
+      let ref = firebaseInstance
+      .firestore()
+      .collection('users')
+      .doc(user.uid);
+  
+        ref.onSnapshot((docSnapshot) => {
+          let data = {
+            id: docSnapshot.id,
+            ...docSnapshot.data()
+          }
+          setUserData(data)
+          console.log(userData)
+        });
+      }
+  }, [])
+
   // Sjekk hvert 10. minutt om en bruker er logget inn
 
   useEffect(() => {
@@ -38,7 +58,11 @@ export function AuthProvider({children}) {
 
   // AuthContext => en wrapper vi trenger for å gi andre komponenter tilgang på contexten
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={user}>
+      {children}
+    </AuthContext.Provider>
+  );
 
 };
 

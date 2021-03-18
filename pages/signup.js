@@ -22,12 +22,7 @@ const Signup = () => {
       const user = await firebaseInstance.auth().createUserWithEmailAndPassword(email, password);
       const uid = user.user.uid;
 
-      const userCollection = await firebaseInstance.firestore().collection('users')
-        .doc(uid).set({
-          email: email,
-          password: password,
-          name: name,
-        });
+      user.user.updateProfile({displayName: name})
 
       console.log('Du har lagt til en bruker');
       router.push('/profile');

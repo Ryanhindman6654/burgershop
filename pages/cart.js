@@ -19,22 +19,6 @@ function Menu({ productsArray, error }) {
   const basket = useBasket();
   const userContext = useAuth();
 
-    // const handleAdd = () => {
-
-    //   const counterRef = firebaseInstance.database().collection('globals').doc('counter')
-
-    //   firebaseInstance.firestore().runTransaction((transaction) => {
-    //     return transaction.get(counterRef).then((doc) => {
-    //       const count = doc.data().count
-    //       let newCount = count + 1
-    //       if(count > 59) {
-    //         newCount = 1
-    //       }
-    //       transaction.update(counterRef, {count: newCount})
-    //     })
-    //   })
-    // };
-
     const handleOrderClick = async () => {
       const counterRef = firebaseInstance
         .firestore()

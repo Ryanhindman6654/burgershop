@@ -29,7 +29,7 @@ const Navbar = () => {
           <LinkWrapper>
             {!userContext && <MenuLink><Link href="login">Log inn</Link></MenuLink>}
             {!userContext && <MenuLink><Link href="login">Registrer bruker</Link></MenuLink>}
-            {userContext && <MenuLink><Link href="profile">{userContext.email}</Link></MenuLink>}
+            {userContext && <MenuLink><Link href="profile">{userContext.displayName}</Link></MenuLink>}
             <MenuLink><Link href="menu">Meny</Link></MenuLink>
             <Button>
               <Link href="/signup">

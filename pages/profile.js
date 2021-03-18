@@ -53,11 +53,12 @@ const Profile = () => {
 
       <Navbar />
       <Container>
-        <PageTitle>Hei Marius</PageTitle>
+        <PageTitle>Hei {userContext.displayName}</PageTitle>
         {userContext && (
           <InfoContainer>
             <OrderTitle><span>Brukerinfo</span></OrderTitle>
             <ul>
+            <li>Navn: {userContext.displayName}</li>
             <li>Epost: {userContext.email}</li>
             <li>Burker-id: {userContext.uid}</li>
             </ul>

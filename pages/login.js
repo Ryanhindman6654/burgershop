@@ -43,8 +43,7 @@ const Login = () => {
         setFirebaseError(error.message)
         console.log('En feil har oppstått')
     };
- };
-
+  };
 
   return (
     <>
