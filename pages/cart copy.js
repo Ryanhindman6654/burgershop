@@ -1,6 +1,6 @@
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {useBasket} from '../config/basket_context'
@@ -19,61 +19,34 @@ function Menu({ productsArray, error }) {
   const basket = useBasket();
   const userContext = useAuth();
 
-    // const handleAdd = () => {
+  function handleOrderClick() {
 
-    //   const counterRef = firebaseInstance.database().collection('globals').doc('counter')
+    const orderCollection = firebaseInstance.firestore().collection('orders');
+    orderCollection.doc().set({
+      user: userContext.email,
+      userid: userContext.uid,
+      ordernumber: 1234,
+      order: basket.productLines.map(item => {
+        return ({
+          title: item.title,
+          price: item.price,
+          amount: 8
+        })
+      }),
+      packaged: false,
+      delivered: false,
+      total: basket.total,
+      time: Date.now(),
+    })
+      .then(doc => {
+        console.log('Lagt til');
+        router.push('/orders/RdRo8uSmnFl8259FU3Go');
+      })
+      .catch(error => {
+        console.error(error);
+      })
 
-    //   firebaseInstance.firestore().runTransaction((transaction) => {
-    //     return transaction.get(counterRef).then((doc) => {
-    //       const count = doc.data().count
-    //       let newCount = count + 1
-    //       if(count > 59) {
-    //         newCount = 1
-    //       }
-    //       transaction.update(counterRef, {count: newCount})
-    //     })
-    //   })
-    // };
-
-    const handleOrderClick = async () => {
-      const counterRef = firebaseInstance
-        .firestore()
-        .collection("globals")
-        .doc("counter");
-      const orderCollection = firebaseInstance.firestore().collection("orders");
-      const orderRef = await orderCollection.add({
-        user: userContext.email,
-        userid: userContext.uid,
-        ordernumber: 1234,
-        order: basket.productLines.map(item => {
-          return ({
-            title: item.title,
-            price: item.price,
-            amount: 8
-          })
-        }),
-        packaged: false,
-        delivered: false,
-        total: basket.total,
-        time: Date.now(),
-      });
-  
-      console.log("Order", orderRef.id);
-  
-      await firebaseInstance.firestore().runTransaction((transaction) => {
-        return transaction.get(counterRef).then((doc) => {
-          const count = doc.data().count;
-          let newCount = count + 1;
-          if (newCount > 60) {
-            newCount = 1;
-          }
-          transaction.update(counterRef, { count: newCount });
-          transaction.update(orderRef, { ordernumber: newCount });
-        });
-      });
-  
-      router.push(`/orders/${orderRef.id}`);
-    };
+  };
 
   return (
     <>

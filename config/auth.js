@@ -26,7 +26,6 @@ export function AuthProvider({children}) {
     });
   });
 
-
   // Sjekk hvert 10. minutt om en bruker er logget inn
 
   useEffect(() => {
@@ -34,9 +33,7 @@ export function AuthProvider({children}) {
       const user = firebaseInstance.auth().currentUser
       if(user) await user.getIdToken(true)
     }, 10 * 60 * 1000);
-
     return clearInterval(handle);
-
   });
 
   // AuthContext => en wrapper vi trenger for å gi andre komponenter tilgang på contexten

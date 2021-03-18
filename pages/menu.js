@@ -18,6 +18,8 @@ function Menu({ productsArray, error }) {
   const router = useRouter();
   const basket = useBasket();
 
+  const drinkMenu = productsArray.filter(item => item.category === 'bu')
+  console.log('Drinkmenu', drinkMenu)
 
   return (
     <>
@@ -32,6 +34,7 @@ function Menu({ productsArray, error }) {
         <PageTitle>Meny</PageTitle>
         <Link href='cart'><NavLink>Til bestilling</NavLink></Link>
         <MenuList>
+          <SubTitle>Drikke</SubTitle>
           {productsArray.map(item => {
             return (
               <MenuItem vegetarian={item.vegetarian} key={item.id}>
@@ -46,13 +49,11 @@ function Menu({ productsArray, error }) {
                 }
                 <p>{item.price},-</p>
                 <Button onClick={() => {
-                  // const existing = basket.productLines.find(exproduct => exproduct.id === item.id);
                   const newProduct = productsArray.find(product => product.id === item.id)
                   basket.addProductLine(newProduct)
                   }}>
                   Legg til
                 </Button>
-
               </MenuItem>
             )
           })}
@@ -87,6 +88,12 @@ Menu.getInitialProps = async () => {
 };
 
 export default Menu;
+
+const SubTitle = styled.h3`
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+`;
 
 const NavLink = styled.button`
   background: none;

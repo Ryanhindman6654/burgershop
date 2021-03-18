@@ -13,24 +13,22 @@ function Status({ ordersArray, error }) {
 
   const [incompleteOrders, setIncompleteOrders] = useState([])
 
-    useEffect(() => {
-        let ref = firebaseInstance
-        .firestore()
-        .collection('orders')
-        //selects all documents where isReady value is false
-        .where('delivered', '==', false)
-        //listener acts whenever documents with this value changes
-        ref.onSnapshot((snapshot) => {
-            let data = []
-            snapshot.forEach((doc) => {
-                data.push({
-                    id: doc.id,
-                    ...doc.data()
-                })
-            })
-        setIncompleteOrders(data)
-        })   
-    }, [])
+  useEffect(() => {
+    let ref = firebaseInstance
+    .firestore()
+    .collection('orders')
+    .where('delivered', '==', false)
+    ref.onSnapshot((snapshot) => {
+      let data = []
+      snapshot.forEach((doc) => {
+        data.push({
+          id: doc.id,
+          ...doc.data()
+        })
+      })
+      setIncompleteOrders(data)
+    })   
+  }, []);
 
   return (
     <Container>
