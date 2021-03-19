@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import Navbar from '../../components/Navbar'
 
 
-export default function Reciept({ myOrder, pageId, error }) {
+export default function Reciept({ pageId, error }) {
 
   if (error !== undefined) {
     return (
@@ -12,23 +12,25 @@ export default function Reciept({ myOrder, pageId, error }) {
     )
   }
 
-  // const [myOrder, setMyOrder] = useState([])
+  const [myOrder, setMyOrder] = useState([])
 
-  // useEffect(() => {
-  //     let ref = firebaseInstance
-  //     .firestore()
-  //     .collection('orders')
-  //     .doc(pageId);
+  useEffect(() => {
+      let ref = firebaseInstance
+      .firestore()
+      .collection('orders')
+      .doc(pageId);
 
-  //     ref.onSnapshot((docSnapshot) => {
-  //       let orderData = {
-  //         id: docSnapshot.id,
-  //         ...docSnapshot.data()
-  //       }
-  //       setMyOrder(orderData)
-  //       console.log(myOrder)
-  //     });
-  // }, [])
+      ref.onSnapshot((docSnapshot) => {
+        let orderData = {
+          id: docSnapshot.id,
+          ...docSnapshot.data()
+        }
+        setMyOrder(orderData)
+        console.log(orderData)
+      });
+  }, [])
+
+  const timeStamp = new Date(myOrder.time).toLocaleString()
 
   return (
     <>
@@ -49,7 +51,7 @@ export default function Reciept({ myOrder, pageId, error }) {
             }
           </StatusBar>
           <ul>
-            {myOrder.order.map(item => {
+            {myOrder?.order?.map(item => {
               return(
                 <li key={item.title}>
                   <p>{item.title}</p> <p>{item.price}</p>
@@ -59,7 +61,7 @@ export default function Reciept({ myOrder, pageId, error }) {
             <li className='total'><p>Total</p> <p>{myOrder.total}</p></li>
           </ul>
           <p>{myOrder.id}<br />{myOrder.user}</p>
-          <p>{Date(myOrder.time)}</p>
+          <p>{timeStamp}</p>
 
         </OrderItem>
       </Container>
@@ -109,7 +111,8 @@ const OrderItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 33%;
+  min-width: 30%;
+  max-width: 95%;
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
@@ -151,23 +154,10 @@ const OrderItem = styled.div`
 
 Reciept.getInitialProps = async ({ query }) => {
 
-  
-
   try {
     const pageId = query.id;
-    const collection = await firebaseInstance.firestore().collection('orders');
-    const document = await collection.doc(pageId).get();
 
-    if (document.exists !== true) {
-      throw new Error('Ordren finnes ikke.')
-    };
-
-    const myOrder = {
-      id: document.id,
-      ...document.data()
-    };
-
-    return { myOrder, pageId };
+    return { pageId };
 
   } catch (error) {
     return {

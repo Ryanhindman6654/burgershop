@@ -27,12 +27,14 @@ const Navbar = () => {
         </Hamburger>
         <Menu isOpen={isOpen}>
           <LinkWrapper>
-            {!userContext && <MenuLink><Link href="login">Log inn</Link></MenuLink>}
-            {!userContext && <MenuLink><Link href="login">Registrer bruker</Link></MenuLink>}
-            {userContext && <MenuLink><Link href="profile">{userContext.displayName}</Link></MenuLink>}
+            {!userContext && <MenuLink><Link href="/login">Log inn</Link></MenuLink>}
+            {!userContext && <MenuLink><Link href="/signup">Registrer bruker</Link></MenuLink>}
+            {userContext && <Link href="/profile"><MenuLink>
+              {userContext.displayName}
+            </MenuLink></Link>}
             <MenuLink><Link href="menu">Meny</Link></MenuLink>
             <Button>
-              <Link href="/signup">
+              <Link href="/cart">
                 Handlekurv
               </Link>
               {' '}
@@ -116,7 +118,9 @@ const LinkWrapper = styled.div`
   }
 `;
 
-const MenuLink = styled.a`
+const MenuLink = styled.button`
+  background: none;
+  border: none;
   text-decoration: none;
   color: ${({theme}) => theme.colors.text_dark};
   font-size: 0.9rem;

@@ -20,6 +20,8 @@ const Profile = () => {
   //   console.log('The context', userContext);
   // }, [userContext]);
 
+  
+
   const handleSignout = async () => {
     await firebaseInstance.auth().signOut();
     router.push('/');
@@ -44,6 +46,7 @@ const Profile = () => {
       })   
   }, [])
 
+
   return (
     <>
       <Head>
@@ -67,7 +70,7 @@ const Profile = () => {
           
         )}
 
-
+        <OrderTitle><span>Ordrehistorikk</span></OrderTitle>
         <OrderList>
           {userOrders.map(item => {
             if (!item.packaged) {
@@ -85,7 +88,7 @@ const Profile = () => {
                   <li className='total'><p>Total</p> <p>{item.total}</p></li>
                 </ul>
                 <p>{item.id}<br />{item.user}</p>
-                <p>{Date(item.time)}</p>
+                <p>{new Date(item.time).toLocaleString()}</p>
               </OrderItem>
             )}
           })}
@@ -103,16 +106,22 @@ const InfoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 33%;
+  min-width: 33%;
+  max-width: 93%;
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
   color: ${({theme}) => theme.colors.text_dark};
   background-color: ${({theme}) => theme.colors.text_light};
 
+  span {
+    font-weight: 900;
+  }
+
   p {
       text-align: center;
     }
+    
   ul {
     padding: 0;
     list-style-type: none;
@@ -122,11 +131,10 @@ const InfoContainer = styled.div`
     li {
       width: 100%;
       padding: 0;
-      margin: 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin: 0.5rem;
+      margin: 0.5rem 0;
       border-bottom: solid 1px ${({packaged, theme}) => (packaged ? theme.colors.text_light : theme.colors.dark)};
     
       p {
@@ -154,13 +162,14 @@ const OrderTitle = styled.h3`
   }
 `;
 
-const OrderItem = styled.div`
-  list-style: none;
+const OrderItem = styled.li`
+  list-style-type: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 33%;
+  min-width: 33%;
+  max-width: 93%;
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
@@ -169,21 +178,21 @@ const OrderItem = styled.div`
 
   p {
       text-align: center;
-    }
+  }
+
   ul {
-    padding: 0;
     list-style-type: none;
+    padding: 0;
     margin: 1rem;
     width: 100%;
 
     li {
+      list-style-type: none;
       width: 100%;
-      padding: 0;
-      margin: 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin: 0.5rem;
+      margin: 0.5rem 0;
       border-bottom: solid 1px ${({packaged, theme}) => (packaged ? theme.colors.text_light : theme.colors.dark)};
     
       p {
@@ -202,7 +211,8 @@ const OrderItem = styled.div`
 const OrderList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  list-style: none;
+  list-style-type: none;
+  padding: 0;
 `;
 
 const Button = styled.button`

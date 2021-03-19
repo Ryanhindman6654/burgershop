@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
@@ -8,6 +7,8 @@ import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
 import {useBasket} from '../config/basket_context'
+import Head from 'next/head'
+
 
 import Navbar from '../components/Navbar'
 
@@ -47,29 +48,39 @@ const Login = () => {
 
   return (
     <>
+      <Head>
+        <title>Logg inn</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Navbar />
       <Container>
+      <PageTitle>Logg inn</PageTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
-            <StyledInput 
-              type='email' 
-              name='email' 
-              placeholder='Email'
-              required
-              ref={register}
-            />
+
+          <label htmlFor='email'>E-post:</label>
+          <StyledInput 
+            type='email' 
+            name='email' 
+            placeholder='E-post'
+            required
+            ref={register}
+          />
+
+          <label htmlFor='password'>Passord:</label>
            
-            <StyledInput 
-              type='password' 
-              name='password' 
-              placeholder='Passord'
-              required
-              ref={register}
-            />
-            
+          <StyledInput 
+            type='password' 
+            name='password' 
+            id='password'
+            placeholder='Passord'
+            required
+            ref={register}
+          />
+
           {firebaseError && <p>{firebaseError}</p>}
           <button type='submit'>Logg inn</button>
           <Terms>
-            Ved å bestille aksepterer du vår <br />
+            Ved å logge inn aksepterer du vår <br />
             <span>personvernerklæring</span>.
           </Terms>
         </Form>
@@ -83,6 +94,15 @@ const Login = () => {
     </>
   );
 };
+
+export default Login;
+
+
+const PageTitle = styled.h1`
+  font-size: 50px;
+  color: ${({ theme }) => theme.colors.text_dark};
+  text-align: center;
+`;
 
 const StyledInput = styled.input`
   width: 75%;
@@ -108,11 +128,9 @@ const Terms = styled.p`
   text-align: center;
   font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.text_dark};
-
   span {
     text-decoration: underline;
   }
-
 `;
 
 const Form = styled.form`
@@ -124,6 +142,16 @@ const Form = styled.form`
   h3 {
     color: #666666;
     margin-bottom: 2rem;
+  }
+
+  label {
+    width: 100%;
+    text-align: left;
+    max-width: 350px;
+    min-width: 250px;
+    width: 75%;
+    padding: 0.2rem 1.1rem;
+    font-size: 0.9rem;
   }
 
   button {
@@ -176,4 +204,3 @@ const Container = styled.div`
   }
 `;
 
-export default Login;
