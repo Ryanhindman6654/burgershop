@@ -7,6 +7,7 @@ import { useBasket } from "../config/basket_context";
 import Navbar from "../components/Navbar";
 
 function Menu({ productsArray, error }) {
+  
   if (error !== undefined) {
     return <p>En feil har oppstått: {error}</p>;
   }
@@ -86,8 +87,8 @@ function Menu({ productsArray, error }) {
                       <p>{product.price},-</p>
                       <Button
                         onClick={() => {
-                          const newProduct = productsArray.find((product) => {
-                            product.id === product.id;
+                          const newProduct = productsArray.find((item) => {
+                            item.id === product.id;
                           });
                           basket.addProductLine(newProduct);
                         }}
@@ -201,7 +202,7 @@ const MenuItem = styled.li`
   justify-content: space-between;
   align-items: center;
   list-style: none;
-  margin: 0.5rem;
+  margin: 0.1rem 0;
   border-bottom: solid 2px ${({ theme }) => theme.colors.text_dark};
 `;
 
