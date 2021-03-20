@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import { useAuth } from '../../config/auth'
 
 const HeroText = () => {
+
+  const userContext = useAuth();
+
   return (
     <Container>
       <h1>Børres</h1>
@@ -12,7 +16,8 @@ const HeroText = () => {
       <h5>Laget med råvarer fra Oslo og Viken</h5>
       <ButtonContainer>
         <Link href='/menu'><button className='readmore'>Se meny</button></Link>
-        <Link href='/login'><button>Logg inn</button></Link>
+        {!userContext && <Link href='/login'><button>Logg inn</button></Link>}
+        {userContext && <Link href='/profile'><button>{userContext.displayName}</button></Link>}
       </ButtonContainer>
     </Container>
   )

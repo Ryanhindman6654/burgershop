@@ -4,7 +4,6 @@ import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {useBasket} from '../config/basket_context'
-import { useAuth } from '../config/auth'
 import { useRouter } from 'next/router'
 
 import Navbar from '../components/Navbar'
@@ -15,106 +14,57 @@ function Menu({ productsArray, error }) {
     return <p>En feil har oppstått: {error}</p>
   }
 
-  const router = useRouter();
   const basket = useBasket();
-  const userContext = useAuth();
 
-  function handleOrderClick() {
+  
+  const burgerMenu = productsArray.filter(item => item.category === 'burgers')
+  const friesMenu = productsArray.filter(item => item.category === 'fries')
+  const dipMenu = productsArray.filter(item => item.category === 'dips')
+  const extraMenu = productsArray.filter(item => item.category === 'extra')
+  const drinkMenu = productsArray.filter(item => item.category === 'drinks')
 
-    const orderCollection = firebaseInstance.firestore().collection('orders');
-    orderCollection.doc().set({
-      user: userContext.email,
-      userid: userContext.uid,
-      ordernumber: 1234,
-      order: basket.productLines.map(item => {
-        return ({
-          title: item.title,
-          price: item.price,
-          amount: 8
-        })
-      }),
-      packaged: false,
-      delivered: false,
-      total: basket.total,
-      time: Date.now(),
-    })
-      .then(doc => {
-        console.log('Lagt til');
-        console.log(doc.data())
-        // router.push(`/orders/${doc.key}`);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+  const fullMenu = [burgerMenu, friesMenu, dipMenu, drinkMenu]
 
-  };
+  console.log('Menu', fullMenu)
 
   return (
     <>
-      
       <Head>
-        <title>Basket</title>
+        <title>Meny</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+
       <Navbar />
 
       <Container>
-      <PageTitle>Meny</PageTitle>
-      <Link href='cart'>
-        <NavLink>Til bestilling</NavLink>
-      </Link>
-      <MenuList>
-        {productsArray.map(item => {
-          return (
-            <MenuItem vegetarian={item.vegetarian} key={item.id}>
-              <ProductTitle>{item.title}</ProductTitle>
-              {item.vegetarian && <p>Vegetarian</p>}
-              {item.contents && 
-                <p>
-                  {item.contents.map(item => {
-                    return <ProductContentItem key={item}>{item}</ProductContentItem>
-                  })}
-                </p>
-              }
-              <p>{item.price},-</p>
-              <Button onClick={() => {
-                // const existing = basket.productLines.find(exproduct => exproduct.id === item.id);
-                const newProduct = productsArray.find(product => product.id === item.id)
-                basket.addProductLine(newProduct)
-                }}>
-                Legg til
-              </Button>
-
-            </MenuItem>
-          )
-        })}
-      </MenuList>
-      </Container>
-      
-      <Container>
-        <PageTitle>Cart</PageTitle>
-        <ul>
-          {basket.productLines.map(item => {
+        <PageTitle>Meny</PageTitle>
+        <Link href='cart'><NavLink>Til bestilling</NavLink></Link>
+        <MenuList>
+          <SubTitle>Drikke</SubTitle>
+          {productsArray.map(item => {
             return (
-              <li key={item.id}>
-                <h3>{item.title}</h3>
+              <MenuItem vegetarian={item.vegetarian} key={item.id}>
+                <ProductTitle>{item.title}</ProductTitle>
+                {item.vegetarian && <ProductContentVeg>veggie</ProductContentVeg>}
+                {item.contents && 
+                  <>
+                    {item.contents.map(item => {
+                      return <ProductContentItem key={item}>{item}</ProductContentItem>
+                    })}
+                  </>
+                }
+                <p>{item.price},-</p>
                 <Button onClick={() => {
                   const newProduct = productsArray.find(product => product.id === item.id)
                   basket.addProductLine(newProduct)
-                }}>
-                  +
+                  }}>
+                  Legg til
                 </Button>
-              </li>
+              </MenuItem>
             )
           })}
-        </ul>
-        <p>Total: {basket.total}</p>
-        {userContext && <button onClick={() => handleOrderClick()}>Send inn bestilling</button>}
-        {!userContext && <button><Link href='/login'>Logg inn</Link></button>}
+        </MenuList>
       </Container>
-      
-
     </>
   );
 };
@@ -144,6 +94,12 @@ Menu.getInitialProps = async () => {
 };
 
 export default Menu;
+
+const SubTitle = styled.h3`
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+`;
 
 const NavLink = styled.button`
   background: none;
@@ -200,6 +156,7 @@ const PageTitle = styled.h1`
 `;
 
 const MenuList = styled.ul`
+  min-width: 50%;
   display: flex;
   flex-direction: column;
 
@@ -212,15 +169,25 @@ const MenuItem = styled.li`
   align-items: center;
   list-style: none;
   margin: 0.5rem;
-  border-bottom: solid 1.5px ${({theme}) => theme.colors.text_dark};
+  border-bottom: solid 2px ${({theme}) => theme.colors.text_dark};
 `;
 
 const ProductTitle = styled.h3`
 `;
 
-const ProductContentItem = styled.span`
+const ProductContentVeg = styled.span`
+  background: ${({ theme }) => theme.colors.text_light};
+  color: ${({ theme }) => theme.colors.text_dark};
   padding: 0.3em;
-  margin-right: 1em;
-  border: 1px solid black;
+  margin-right: 0.3em;
+  border-radius: 0.5em;
+
+
+`;
+
+const ProductContentItem = styled.span`
+  border: 1.5px solid ${({ theme }) => theme.colors.text_dark};
+  padding: 0.3em;
+  margin-right: 0.3em;
   border-radius: 0.5em;
 `;

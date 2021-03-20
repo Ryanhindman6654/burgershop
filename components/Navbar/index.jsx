@@ -12,9 +12,9 @@ const Navbar = () => {
   const basket = useBasket();
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    console.log('The context', userContext);
-  }, [userContext]);
+  // useEffect(() => {
+  //   console.log('The context', userContext);
+  // }, [userContext]);
 
   return (
     <Nav>
@@ -27,12 +27,12 @@ const Navbar = () => {
         </Hamburger>
         <Menu isOpen={isOpen}>
           <LinkWrapper>
-            {!userContext && <MenuLink><Link href="/login">Log inn</Link></MenuLink>}
-            {!userContext && <MenuLink><Link href="/signup">Registrer bruker</Link></MenuLink>}
+            {!userContext && <Link href="/login"><MenuLink>Log inn</MenuLink></Link>}
+            {!userContext && <Link href="/signup"><MenuLink>Registrer bruker</MenuLink></Link>}
             {userContext && <Link href="/profile"><MenuLink>
               {userContext.displayName}
             </MenuLink></Link>}
-            <MenuLink><Link href="menu">Meny</Link></MenuLink>
+            <Link href="menu"><MenuLink>Meny</MenuLink></Link>
             <Button>
               <Link href="/cart">
                 Handlekurv
@@ -128,6 +128,7 @@ const MenuLink = styled.button`
   transition: all 0.2s ease-in-out;
   border-radius: 0.5rem;
   font-weight: 500;
+  cursor: pointer;
 
   &:hover {
     background: ${({theme}) => theme.colors.text_light};
