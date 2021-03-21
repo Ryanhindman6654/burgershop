@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { useAuth } from '../../config/auth'
 import { useBasket } from '../../config/basket_context'
 
@@ -11,10 +11,6 @@ const Navbar = () => {
   const userContext = useAuth();
   const basket = useBasket();
   const [isOpen, setIsOpen] = useState(false);
-
-  // useEffect(() => {
-  //   console.log('The context', userContext);
-  // }, [userContext]);
 
   return (
     <Nav>

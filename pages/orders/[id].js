@@ -1,8 +1,6 @@
 import firebaseInstance from '../../config/firebase'
 import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
-import Navbar from '../../components/Navbar'
-
 
 export default function Reciept({ pageId, error }) {
 
@@ -36,7 +34,6 @@ export default function Reciept({ pageId, error }) {
     <>
       
       <Container>
-      {/* <Navbar /> */}
         <Title>Din bestilling</Title>
         <OrderItem>
           <OrderTitle><span>Hentenummer</span><br />{myOrder.ordernumber}</OrderTitle>
@@ -145,7 +142,6 @@ const OrderItem = styled.div`
     }
     
     .total {
-        /* padding-top: 1rem; */
         border: none;
         font-weight: 900;
       }

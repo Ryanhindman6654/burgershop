@@ -1,6 +1,6 @@
 import firebaseInstance from '../config/firebase'
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {useBasket} from '../config/basket_context'

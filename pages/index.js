@@ -1,13 +1,6 @@
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-import { Flex, Box } from 'reflexbox/styled-components'
-// import image from '../assets/hero.jpeg'
 import HeroText from '../components/HeroText'
-import { theme } from '../config/theme'
-
-
-
-
 
 export default function Home() {
   return (
@@ -26,7 +19,6 @@ export default function Home() {
     </>
   )
 }
-
 
 const ImgWrapper = styled.div`
   height: 60%;

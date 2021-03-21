@@ -87,9 +87,11 @@ function Menu({ productsArray, error }) {
                       <p>{product.price},-</p>
                       <Button
                         onClick={() => {
-                          const newProduct = productsArray.find((item) => {
-                            item.id === product.id;
-                          });
+                         
+                          const newProduct = productsArray.find(
+                            (item) => item.id === product.id
+                          );
+                          
                           basket.addProductLine(newProduct);
                         }}
                       >
