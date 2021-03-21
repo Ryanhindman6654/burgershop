@@ -1,57 +1,52 @@
-import React, {useState} from 'react'
-import Link from 'next/link'
-import firebaseInstance from '../config/firebase';
-import { useRouter } from 'next/router'
-import Head from 'next/head'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import Link from "next/link";
+import firebaseInstance from "../config/firebase";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import styled from "styled-components";
 
+import { useForm } from "react-hook-form";
+import { string, object } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-
-import { useForm } from 'react-hook-form';
-import { string, object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
 
 const schema = object().shape({
-  name: string().required('Dette feltet er påkrevd'),
-  email: string().required('Dette feltet er påkrevd'),
-  password: string().required('Dette feltet er påkrevd')
+  name: string().required("Vennligst fyll inn navn"),
+  email: string().required("Vennligst fyll inn en gyldig e-post"),
+  password: string().required("Vennligst fyll inn et gyldig passord"),
 });
 
 const Signup = () => {
 
   const router = useRouter();
 
-  // const [email, setEmail] = useState(null);
-  // const [password, setPassword] = useState(null);
-  // const [name, setName] = useState(null);
-  // const [error, setError] = useState(null);
-
   const [firebaseError, setFirebaseError] = useState(null);
 
   const { register, handleSubmit, watch, errors } = useForm({
-    mode: 'onChange',
-    resolver: yupResolver(schema)
+    mode: "onChange",
+    resolver: yupResolver(schema),
   });
 
-  console.log(errors)
+  console.log(errors);
 
   const onSubmit = async (data) => {
 
-    console.log('Form data', data);
     const { name, email, password } = data;
 
     try {
-      const user = await firebaseInstance.auth().createUserWithEmailAndPassword(email, password);
+      const user = await firebaseInstance
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
 
-      user.user.updateProfile({displayName: name})
-
-      console.log('Du har lagt til en bruker');
-      // router.push('/index');
-    } catch(error) {
-        setFirebaseError(error.message)
-        console.log('En feil har oppstått')
+      user.user.updateProfile({ displayName: name });
+      
+      (basket.productLines.length > 0)
+        ? router.push("/cart")
+        : router.push("/menu")
+        ;
+    } catch (error) {
+      setFirebaseError(error.message);
     }
   };
 
@@ -63,57 +58,53 @@ const Signup = () => {
       </Head>
       <Navbar />
       <Container>
-      <PageTitle>Ny bruker</PageTitle>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='name'>Navn:</label>
-        <StyledInput
-          type='text' 
-          name='name'
-          id='name'
-          placeholder='Navn'
-          required
-          ref={register}
-          // onChange={e => setName(e.target.value)}
-        />
-        <label htmlFor='email'>E-post:</label>
-        <StyledInput 
-          type='email' 
-          name='email' 
-          id='email'
-          placeholder='E-post'
-          required
-          ref={register}
-          // onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor='passord'>Passord:</label>
-        <StyledInput
-          type='password' 
-          name='password' 
-          id='password'
-          placeholder='Passord'
-          required
-          ref={register}
-          // onChange={e => setPassword(e.target.value)}
-        />
+        <PageTitle>Ny bruker</PageTitle>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="name">Navn:</label>
+          <StyledInput
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Navn"
+            required
+            ref={register}
+          />
+          <label htmlFor="email">E-post:</label>
+          <StyledInput
+            type="email"
+            name="email"
+            id="email"
+            placeholder="E-post"
+            required
+            ref={register}
+          />
+          <label htmlFor="passord">Passord:</label>
+          <StyledInput
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Passord"
+            required
+            ref={register}
+          />
 
-        
-        {firebaseError && <p>{firebaseError}</p>}
-        <button type='submit'>Registrer deg</button>
-        <Terms>
-          Ved å logge inn aksepterer du vår <br />
-          <span>personvernerklæring</span>.
-        </Terms>
-      </Form>
-      <h4>
-          Har du allerede en bruker?{' '}
-          <Link href='/login'>
+          {firebaseError && <p>{firebaseError}</p>}
+          <button type="submit">Registrer deg</button>
+          <Terms>
+            Ved å logge inn aksepterer du vår <br />
+            <span>personvernerklæring</span>.
+          </Terms>
+        </Form>
+        <h4>
+          Har du allerede en bruker?{" "}
+          <Link href="/login">
             <span>Logg inn</span>
           </Link>
-      </h4>
+        </h4>
       </Container>
     </>
-  )
-}
+  );
+};
 
 export default Signup;
 
@@ -141,7 +132,7 @@ const StyledInput = styled.input`
   transition: all 0.2s ease-in;
 
   &:hover {
-    box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+    box-shadow: 0px 17px 16px -11px ${({ theme }) => theme.colors.text_dark};
     transform: translateY(-5px);
   }
 `;
@@ -151,7 +142,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   h3 {
     color: #666666;
     margin-bottom: 2rem;
@@ -174,18 +165,18 @@ const Form = styled.form`
     margin: 1rem 0;
     font-size: 0.9rem;
     border: none;
-    background-color: ${({theme}) => theme.colors.text_dark};
+    background-color: ${({ theme }) => theme.colors.text_dark};
     border: none;
     padding: 0.8rem 1.1rem;
-    color: ${({theme}) => theme.colors.text_light};
+    color: ${({ theme }) => theme.colors.text_light};
     border-radius: 1rem;
-    box-shadow: 0px 12px 24px -7px ${({theme}) => theme.colors.text_dark};
+    box-shadow: 0px 12px 24px -7px ${({ theme }) => theme.colors.text_dark};
     transition: all 0.2s ease-in-out;
     margin-left: 0.5rem;
     cursor: pointer;
 
     &:hover {
-      box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+      box-shadow: 0px 17px 16px -11px ${({ theme }) => theme.colors.text_dark};
       transform: translateY(-5px);
     }
   }
@@ -204,7 +195,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: ${({theme}) => theme.colors.light_green};
+  background: ${({ theme }) => theme.colors.light_green};
   color: ${({ theme }) => theme.colors.text_dark};
 
   h4 {
@@ -212,8 +203,6 @@ const Container = styled.div`
     font-size: 0.9rem;
     margin-top: 2rem;
     font-weight: 400;
-
-
 
     span {
       cursor: pointer;
