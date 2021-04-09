@@ -32,7 +32,7 @@ function Menu({ productsArray, error }) {
         return {
           title: item.title,
           price: item.price,
-          amount: 8,
+          quantity: item.quantity,
         };
       }),
       packaged: false,
@@ -88,10 +88,10 @@ function Menu({ productsArray, error }) {
                 >
                   +
                 </InlineButton>
-                <ProductTitle>1</ProductTitle>
+                <ProductTitle>{item.quantity}</ProductTitle>
                 <InlineButton
                   onClick={() => {
-                    basket.removeProductLine(index);
+                    basket.removeProductLine(item, index);
                   }}
                 >
                   -

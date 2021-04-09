@@ -11,22 +11,50 @@ export const Basket = ({ children }) => {
   const [total, setTotal] = useState(0);
 
   const addProductLine = (newProduct) => {
-    setProductLines([...productLines, newProduct]);
+    const index = productLines.findIndex((item) => item.id === newProduct.id);
+
+    if (index >= 0) {
+      const productAtIndex = productLines[index];
+      productAtIndex.quantity = productAtIndex.quantity + 1;
+
+      const prevCart = [...productLines];
+      prevCart.splice(index, 1);
+
+      setProductLines([...prevCart, productAtIndex]);
+    } else {
+      newProduct.quantity = 1;
+      setProductLines([...productLines, newProduct]);
+    }
+    console.log(productLines);
   };
 
-  const removeProductLine = (index) => {
-    setProductLines(
-      productLines.filter((i, x) => {
-        return index !== x;
-      })
-    );
+  const removeProductLine = (item, index) => {
+    if (item.quantity >= 2) {
+      const productAtIndex = productLines[index];
+      productAtIndex.quantity = productAtIndex.quantity - 1;
+
+      const prevCart = [...productLines];
+      prevCart.splice(index, 1);
+
+      setProductLines([...prevCart, productAtIndex]);
+      console.log(productLines);
+    } else {
+      setProductLines(
+        productLines.filter((i, x) => {
+          return index !== x;
+        })
+      );
+    }
   };
 
   useEffect(() => {
-    const total = productLines.reduce((prev, cur) => {
-      return prev + cur.price;
+    let productTotal = productLines.map((el) => {
+      return parseInt(el.price * el.quantity);
+    });
+    const basketTotal = productTotal.reduce((prev, cur) => {
+      return prev + cur;
     }, 0);
-    setTotal(total);
+    setTotal(basketTotal);
   }, [productLines]);
 
   return (

@@ -7,12 +7,13 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 
 const Profile = () => {
-  const router = useRouter();
   const userContext = useAuth();
 
   if (!userContext) {
     return <p>Du er ikke logget inn</p>;
   }
+
+  const router = useRouter();
 
   const handleSignout = async () => {
     await firebaseInstance.auth().signOut();
@@ -69,7 +70,7 @@ const Profile = () => {
           {userOrders.map((item) => {
             if (!item.packaged) {
               return (
-                <OrderItem>
+                <OrderItem key={item.id}>
                   <OrderTitle>
                     <span>
                       Bestilling
@@ -81,7 +82,8 @@ const Profile = () => {
                     {item.order.map((item) => {
                       return (
                         <li key={item.title}>
-                          <p>{item.title}</p> <p>{item.price}</p>
+                          <p>{item.title}</p> <p>{item.quantity}</p>{" "}
+                          <p>{item.price}</p>
                         </li>
                       );
                     })}

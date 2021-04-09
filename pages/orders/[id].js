@@ -46,7 +46,7 @@ export default function Reciept({ pageId, error }) {
             {myOrder?.order?.map((item) => {
               return (
                 <li key={item.title}>
-                  <p>{item.title}</p> <p>{item.price}</p>
+                  <p>{item.title}</p> <p>{item.quantity}</p> <p>{item.price}</p>
                 </li>
               );
             })}

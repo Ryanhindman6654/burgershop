@@ -72,7 +72,7 @@ function Menu({ productsArray, error }) {
                         <>
                           {product.contents.map((product) => {
                             return (
-                              <ProductContentItem key={product}>
+                              <ProductContentItem key={[product]}>
                                 {product}
                               </ProductContentItem>
                             );

@@ -68,7 +68,12 @@ function Kitchen({ ordersArray, error }) {
               <OrderTitle>{item.ordernumber}</OrderTitle>
               <ul>
                 {item.order.map((item) => {
-                  return <li key={item.title}>{item.title}</li>;
+                  return (
+                    <li key={item.title}>
+                      <p>{item.title}</p>
+                      <p>{item.quantity}</p>
+                    </li>
+                  );
                 })}
               </ul>
               {!item.packaged && (
@@ -144,6 +149,7 @@ const OrderTitle = styled.h3`
   font-weight: 900;
   font-size: 3.5rem;
 `;
+
 const StatusButton = styled.button`
   background: ${({ packaged, theme }) =>
     packaged ? theme.colors.text_light : theme.colors.text_dark};
