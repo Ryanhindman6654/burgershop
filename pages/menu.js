@@ -7,7 +7,6 @@ import { useBasket } from "../config/basket_context";
 import Navbar from "../components/Navbar";
 
 function Menu({ productsArray, error }) {
-  
   if (error !== undefined) {
     return <p>En feil har oppstått: {error}</p>;
   }
@@ -23,15 +22,11 @@ function Menu({ productsArray, error }) {
     },
     {
       category: "Fries",
-      products: productsArray.filter(
-        (product) => product.category === "fries"
-      ),
+      products: productsArray.filter((product) => product.category === "fries"),
     },
     {
       category: "Dips",
-      products: productsArray.filter(
-        (product) => product.category === "dips"
-      ),
+      products: productsArray.filter((product) => product.category === "dips"),
     },
     {
       category: "Extras",
@@ -87,11 +82,10 @@ function Menu({ productsArray, error }) {
                       <p>{product.price},-</p>
                       <Button
                         onClick={() => {
-                         
                           const newProduct = productsArray.find(
                             (item) => item.id === product.id
                           );
-                          
+
                           basket.addProductLine(newProduct);
                         }}
                       >
