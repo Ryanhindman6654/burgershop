@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useContext, createContext } from 'react'
+import React, { useEffect, useState, useContext, createContext } from "react";
 
 const BasketContext = createContext({
-
   productLines: [],
   addProductLine: () => {},
   total: 0,
-
 });
 
-export const Basket = ({children}) => {
-
+export const Basket = ({ children }) => {
   const [productLines, setProductLines] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -19,28 +16,29 @@ export const Basket = ({children}) => {
   // };
 
   const addProductLine = (newProduct) => {
-
-    const index = productLines.findIndex((item) => item.id === newProduct.id)
+    const index = productLines.findIndex((item) => item.id === newProduct.id);
 
     if (index >= 0) {
       const productAtIndex = productLines[index];
-      productAtIndex.quantity = (productAtIndex.quantity + 1);
+      productAtIndex.quantity = productAtIndex.quantity + 1;
 
-      const prevCart = [...productLines]
-      prevCart.splice(index, 1)
+      const prevCart = [...productLines];
+      prevCart.splice(index, 1);
 
-      setProductLines([prevCart, productAtIndex])
+      setProductLines([prevCart, productAtIndex]);
     } else {
-      newProduct.quantity = 1
-      setProductLines([...productLines, newProduct])
+      newProduct.quantity = 1;
+      setProductLines([...productLines, newProduct]);
     }
     // console.log(productLines)
   };
 
-  const removeProductLine = (e, i) => {
-    slice
-    setProductLines([...productLines, newProduct])
-    // console.log(productLines)
+  const removeProductLine = (index) => {
+    setProductLines(
+      productLines.filter((i, x) => {
+        return index !== x;
+      })
+    );
   };
 
   // useEffect(() => {
@@ -57,19 +55,17 @@ export const Basket = ({children}) => {
   // }, [productLines]);
 
   useEffect(() => {
-
     const calcSum = productLines.forEach((item) => {
       let a = item.price;
       let b = item.quantity;
-      return Number(a*b);
-     })
-    
-    console.log(calcSum)
+      return Number(a * b);
+    });
+
+    console.log(calcSum);
 
     // console.log(total)
     setTotal(calcSum);
   }, [productLines]);
-
 
   // useEffect(() => {
 
@@ -97,10 +93,12 @@ export const Basket = ({children}) => {
   // }, [productLines]);
 
   return (
-    <BasketContext.Provider value={{productLines, addProductLine, removeProductLine, total}}>
+    <BasketContext.Provider
+      value={{ productLines, addProductLine, removeProductLine, total }}
+    >
       {children}
     </BasketContext.Provider>
-  )
+  );
 };
 
 export const BasketConsumer = BasketContext.Consumer;

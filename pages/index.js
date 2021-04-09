@@ -1,12 +1,12 @@
-import styled from 'styled-components'
-import Navbar from '../components/Navbar'
-import HeroText from '../components/HeroText'
+import styled from "styled-components";
+import Navbar from "../components/Navbar";
+import HeroText from "../components/HeroText";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <Container >
+      <Container>
         <Wrapper>
           <InnerWrapper>
             <Left>
@@ -17,7 +17,7 @@ export default function Home() {
         </Wrapper>
       </Container>
     </>
-  )
+  );
 }
 
 const ImgWrapper = styled.div`
@@ -27,10 +27,10 @@ const ImgWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  background-image: url('https://images.unsplash.com/photo-1571342169924-b85ca4a01fa9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  background-image: url("https://images.unsplash.com/photo-1571342169924-b85ca4a01fa9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   @media (max-width: 670px) {
     display: none;
@@ -43,7 +43,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({theme}) => theme.colors.light_green};
+  background: ${({ theme }) => theme.colors.light_green};
 `;
 
 const Wrapper = styled.div`

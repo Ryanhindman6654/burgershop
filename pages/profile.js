@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 
 const Profile = () => {
-  
   const router = useRouter();
   const userContext = useAuth();
 

@@ -1,8 +1,7 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import {AuthProvider} from '../config/auth'
-import {Basket} from '../config/basket_context'
-import {theme} from '../config/theme'
-
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { AuthProvider } from "../config/auth";
+import { Basket } from "../config/basket_context";
+import { theme } from "../config/theme";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -33,19 +32,19 @@ const GlobalStyle = createGlobalStyle`
     line-height:  1.4;
     font-family: "Roboto", Helvetica, Sans-Serif;
   }
-`
+`;
 
 function MyApp({ Component, pageProps }) {
-  return  (
+  return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <GlobalStyle />
         <Basket>
           <Component {...pageProps} />
-        </Basket>  
+        </Basket>
       </AuthProvider>
     </ThemeProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

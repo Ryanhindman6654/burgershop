@@ -33,10 +33,9 @@ const Login = () => {
 
     try {
       await firebaseInstance.auth().signInWithEmailAndPassword(email, password);
-      (basket.productLines.length > 0)
-      ? router.push('/cart')
-      : router.push('/menu')
-      ;
+      basket.productLines.length > 0
+        ? router.push("/cart")
+        : router.push("/menu");
     } catch (error) {
       setFirebaseError(error.message);
       console.log("En feil har oppstått");
@@ -53,7 +52,6 @@ const Login = () => {
       <Container>
         <PageTitle>Logg inn</PageTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
-
           <label htmlFor="email">E-post:</label>
           <StyledInput
             type="email"

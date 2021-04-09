@@ -18,7 +18,6 @@ const schema = object().shape({
 });
 
 const Signup = () => {
-
   const router = useRouter();
 
   const [firebaseError, setFirebaseError] = useState(null);
@@ -31,7 +30,6 @@ const Signup = () => {
   console.log(errors);
 
   const onSubmit = async (data) => {
-
     const { name, email, password } = data;
 
     try {
@@ -40,11 +38,10 @@ const Signup = () => {
         .createUserWithEmailAndPassword(email, password);
 
       user.user.updateProfile({ displayName: name });
-      
-      (basket.productLines.length > 0)
+
+      basket.productLines.length > 0
         ? router.push("/cart")
-        : router.push("/menu")
-        ;
+        : router.push("/menu");
     } catch (error) {
       setFirebaseError(error.message);
     }
