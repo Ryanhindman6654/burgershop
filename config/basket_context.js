@@ -10,6 +10,15 @@ export const Basket = ({ children }) => {
   const [productLines, setProductLines] = useState([]);
   const [total, setTotal] = useState(0);
 
+  useEffect(() => {
+    const data = localStorage.getItem("product-lines");
+    data && setProductLines(JSON.parse(data));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("product-lines", JSON.stringify(productLines));
+  }, [productLines]);
+
   const addProductLine = (newProduct) => {
     const index = productLines.findIndex((item) => item.id === newProduct.id);
 
