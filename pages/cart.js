@@ -77,7 +77,7 @@ function Menu({ productsArray, error }) {
             return (
               <MenuItem key={item.id}>
                 <ProductTitle>{item.title}</ProductTitle>
-                <ProductTitle>{item.price},-</ProductTitle>
+                <ProductPrice>{item.price},-</ProductPrice>
                 <InlineButton
                   onClick={() => {
                     const newProduct = productsArray.find(
@@ -88,7 +88,7 @@ function Menu({ productsArray, error }) {
                 >
                   +
                 </InlineButton>
-                <ProductTitle>{item.quantity}</ProductTitle>
+                <p>{item.quantity}</p>
                 <InlineButton
                   onClick={() => {
                     basket.removeProductLine(item, index);
@@ -213,10 +213,10 @@ const PageTitle = styled.h1`
 `;
 
 const MenuList = styled.ul`
-  min-width: 50%;
+  width: 90%;
+  max-width: 768px;
   display: flex;
   flex-direction: column;
-
   flex-wrap: wrap;
 `;
 
@@ -229,7 +229,16 @@ const MenuItem = styled.li`
   border-bottom: solid 1.5px ${({ theme }) => theme.colors.text_dark};
 `;
 
-const ProductTitle = styled.h3``;
+const ProductTitle = styled.h3`
+  justify-self: flex-start;
+  flex-grow: 2;
+`;
+
+const ProductPrice = styled.p`
+  justify-self: flex-end;
+  font-weight: 900;
+  margin-right: 1rem;
+`;
 
 const ProductContentItem = styled.span`
   padding: 0.3em;

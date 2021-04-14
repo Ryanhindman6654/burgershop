@@ -46,7 +46,8 @@ export default function Reciept({ pageId, error }) {
             {myOrder?.order?.map((item) => {
               return (
                 <li key={item.title}>
-                  <p>{item.title}</p> <p>{item.quantity}</p> <p>{item.price}</p>
+                  <p>{item.title}</p>
+                  <ProductPrice>{item.price}</ProductPrice>
                 </li>
               );
             })}
@@ -110,8 +111,8 @@ const OrderItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-width: 30%;
-  max-width: 95%;
+  width: 90%;
+  max-width: 768px;
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5em;
@@ -152,6 +153,10 @@ const OrderItem = styled.div`
       font-weight: 900;
     }
   }
+`;
+
+const ProductPrice = styled.p`
+  justify-self: flex-end;
 `;
 
 Reciept.getInitialProps = async ({ query }) => {

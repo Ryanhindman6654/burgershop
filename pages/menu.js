@@ -65,9 +65,6 @@ function Menu({ productsArray, error }) {
                   return (
                     <MenuItem vegetarian={product.vegetarian} key={product.id}>
                       <ProductTitle>{product.title}</ProductTitle>
-                      {product.vegetarian && (
-                        <ProductContentVeg>veggie</ProductContentVeg>
-                      )}
                       {product.contents && (
                         <>
                           {product.contents.map((product) => {
@@ -79,7 +76,7 @@ function Menu({ productsArray, error }) {
                           })}
                         </>
                       )}
-                      <p>{product.price},-</p>
+                      <ProductPrice>{product.price},-</ProductPrice>
                       <Button
                         onClick={() => {
                           const newProduct = productsArray.find(
@@ -89,7 +86,7 @@ function Menu({ productsArray, error }) {
                           basket.addProductLine(newProduct);
                         }}
                       >
-                        Legg til
+                        Add
                       </Button>
                     </MenuItem>
                   );
@@ -186,10 +183,12 @@ const PageTitle = styled.h1`
 `;
 
 const MenuList = styled.ul`
-  min-width: 50%;
+  width: 90%;
+  max-width: 768px;
   display: flex;
   flex-direction: column;
-
+  padding: 0;
+  list-style-type: none;
   flex-wrap: wrap;
 `;
 
@@ -199,17 +198,16 @@ const MenuItem = styled.li`
   align-items: center;
   list-style: none;
   margin: 0.1rem 0;
+
   border-bottom: solid 2px ${({ theme }) => theme.colors.text_dark};
 `;
 
-const ProductTitle = styled.h3``;
-
-const ProductContentVeg = styled.span`
-  background: ${({ theme }) => theme.colors.text_light};
-  color: ${({ theme }) => theme.colors.text_dark};
-  padding: 0.3em;
-  margin-right: 0.3em;
-  border-radius: 0.5em;
+const ProductTitle = styled.h3`
+  justify-self: flex-start;
+  flex-grow: 2;
+`;
+const ProductPrice = styled.p`
+  justify-self: flex-end;
 `;
 
 const ProductContentItem = styled.span`
@@ -217,4 +215,9 @@ const ProductContentItem = styled.span`
   padding: 0.3em;
   margin-right: 0.3em;
   border-radius: 0.5em;
+  font-size: 0.85rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

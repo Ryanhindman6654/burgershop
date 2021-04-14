@@ -71,7 +71,9 @@ function Kitchen({ ordersArray, error }) {
                   return (
                     <li key={item.title}>
                       <p>{item.title}</p>
-                      <p>{item.quantity}</p>
+                      <p>
+                        <span>{item.quantity}</span>
+                      </p>
                     </li>
                   );
                 })}
@@ -112,7 +114,7 @@ const OrderList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
 `;
@@ -138,10 +140,15 @@ const OrderItem = styled.li`
     width: 100%;
 
     li {
-      margin: 0.5rem;
+      /* margin: 0.5rem; */
+      display: flex;
+      justify-content: space-between;
       border-bottom: solid 1px
         ${({ packaged, theme }) =>
           packaged ? theme.colors.text_light : theme.colors.dark};
+      span {
+        font-weight: 900;
+      }
     }
   }
 `;
