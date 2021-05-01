@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import firebaseInstance from "../config/firebase";
-import { useRouter } from "next/router";
-import { useAuth } from "../config/auth";
+
 import Head from "next/head";
-import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import firebaseInstance from "../config/firebase";
+import styled from "styled-components";
+import { useAuth } from "../config/auth";
+import { useRouter } from "next/router";
 
 const Profile = () => {
   const userContext = useAuth();

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { object, string } from "yup";
+
+import Head from "next/head";
 import Link from "next/link";
+import Navbar from "../components/Navbar";
 import firebaseInstance from "../config/firebase";
-import { useForm } from "react-hook-form";
-import { string, object } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import styled from "styled-components";
 import { useBasket } from "../config/basket_context";
-import Head from "next/head";
-
-import Navbar from "../components/Navbar";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = object().shape({
   email: string().required("Vennligst fyll inn en gyldig e-post"),

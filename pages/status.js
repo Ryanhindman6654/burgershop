@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
+
 import firebaseInstance from "../config/firebase";
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
 
 function Status({ ordersArray, error }) {
   if (error !== undefined) {

@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -7,17 +7,17 @@ const firebaseConfig = {
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 try {
   firebase.initializeApp(firebaseConfig);
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-} catch(error) {
+} catch (error) {
   if (!/already exists/.test(error.message)) {
-    console.error('Firebase error')
+    console.error("Firebase error");
   }
-};
+}
 
 const firebaseInstance = firebase;
 export default firebaseInstance;

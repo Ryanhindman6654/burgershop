@@ -1,10 +1,10 @@
-import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import styled from "styled-components";
-import firebaseInstance from "../config/firebase";
-import { useBasket } from "../config/basket_context";
 import Navbar from "../components/Navbar";
+import React from "react";
+import firebaseInstance from "../config/firebase";
+import styled from "styled-components";
+import { useBasket } from "../config/basket_context";
 
 function Menu({ productsArray, error }) {
   if (error !== undefined) {

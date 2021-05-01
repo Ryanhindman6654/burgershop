@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import Link from "next/link";
-import firebaseInstance from "../config/firebase";
-import { useRouter } from "next/router";
+import { object, string } from "yup";
+
 import Head from "next/head";
-import styled from "styled-components";
-
-import { useForm } from "react-hook-form";
-import { string, object } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-
+import Link from "next/link";
 import Navbar from "../components/Navbar";
+import firebaseInstance from "../config/firebase";
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = object().shape({
   name: string().required("Vennligst fyll inn navn"),

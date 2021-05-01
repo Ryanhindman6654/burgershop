@@ -1,13 +1,12 @@
-import firebaseInstance from "../config/firebase";
-import styled from "styled-components";
-import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useBasket } from "../config/basket_context";
-import { useAuth } from "../config/auth";
-import { useRouter } from "next/router";
-
 import Navbar from "../components/Navbar";
+import React from "react";
+import firebaseInstance from "../config/firebase";
+import styled from "styled-components";
+import { useAuth } from "../config/auth";
+import { useBasket } from "../config/basket_context";
+import { useRouter } from "next/router";
 
 function Menu({ productsArray, error }) {
   if (error !== undefined) {

@@ -1,4 +1,5 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+
 import { AuthProvider } from "../config/auth";
 import { Basket } from "../config/basket_context";
 import { theme } from "../config/theme";

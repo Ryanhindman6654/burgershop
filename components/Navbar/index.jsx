@@ -1,13 +1,11 @@
-import React, {useState} from 'react'
-import { useAuth } from '../../config/auth'
-import { useBasket } from '../../config/basket_context'
+import React, { useState } from "react";
 
-import Link from 'next/link'
-
-import styled from 'styled-components'
+import Link from "next/link";
+import styled from "styled-components";
+import { useAuth } from "../../config/auth";
+import { useBasket } from "../../config/basket_context";
 
 const Navbar = () => {
-
   const userContext = useAuth();
   const basket = useBasket();
   const [isOpen, setIsOpen] = useState(false);
@@ -16,27 +14,36 @@ const Navbar = () => {
     <Nav>
       <Container>
         <Logo href="/">Børres Burgere</Logo>
-        <Hamburger onClick={()=>setIsOpen(!isOpen)}>
+        <Hamburger onClick={() => setIsOpen(!isOpen)}>
           <span></span>
           <span></span>
           <span></span>
         </Hamburger>
         <Menu isOpen={isOpen}>
           <LinkWrapper>
-            {!userContext && <Link href="/login"><MenuLink>Log inn</MenuLink></Link>}
-            {!userContext && <Link href="/signup"><MenuLink>Registrer bruker</MenuLink></Link>}
-            {userContext && <Link href="/profile"><MenuLink>
-              {userContext.displayName}
-            </MenuLink></Link>}
-            <Link href="menu"><MenuLink>Meny</MenuLink></Link>
-            <Button>
-              <Link href="/cart">
-                Handlekurv
+            {!userContext && (
+              <Link href="/login">
+                <MenuLink>Log inn</MenuLink>
               </Link>
-              {' '}
+            )}
+            {!userContext && (
+              <Link href="/signup">
+                <MenuLink>Registrer bruker</MenuLink>
+              </Link>
+            )}
+            {userContext && (
+              <Link href="/profile">
+                <MenuLink>{userContext.displayName}</MenuLink>
+              </Link>
+            )}
+            <Link href="menu">
+              <MenuLink>Meny</MenuLink>
+            </Link>
+            <Button>
+              <Link href="/cart">Handlekurv</Link>{" "}
               <span>
-                {(basket.productLines.length > 1) && basket.productLines.length}
-                </span>
+                {basket.productLines.length > 1 && basket.productLines.length}
+              </span>
             </Button>
           </LinkWrapper>
         </Menu>
@@ -45,12 +52,11 @@ const Navbar = () => {
   );
 };
 
-
 export default Navbar;
 
 const Logo = styled(Link)`
   font-weight: 900;
-  color: ${({theme}) => theme.colors.text_dark};
+  color: ${({ theme }) => theme.colors.text_dark};
   cursor: pointer;
 `;
 
@@ -82,23 +88,23 @@ const Menu = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     overflow: hidden;
     border-radius: 1rem;
     margin-top: 1rem;
-    box-shadow: -4px 8px 15px 1 rgba(0,0,0,0.07);
-    max-height: ${({isOpen}) => isOpen ? '300px' : '0px'};
+    box-shadow: -4px 8px 15px 1 rgba(0, 0, 0, 0.07);
+    max-height: ${({ isOpen }) => (isOpen ? "300px" : "0px")};
     width: 100%;
     transition: max-height 0.3s ease-in-out;
 
     background: rgba(255, 255, 255, 0.9);
-      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-        --webkit-backdrop-filter: blur(15px);
-        backdrop-filter: blur(15px);
-        background: rgba(255, 255, 255, 0.4);
-      }
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      --webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.4);
+    }
   }
 `;
 
@@ -118,7 +124,7 @@ const MenuLink = styled.button`
   background: none;
   border: none;
   text-decoration: none;
-  color: ${({theme}) => theme.colors.text_dark};
+  color: ${({ theme }) => theme.colors.text_dark};
   font-size: 0.9rem;
   padding: 0.7rem 1.5rem;
   transition: all 0.2s ease-in-out;
@@ -127,32 +133,30 @@ const MenuLink = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: ${({theme}) => theme.colors.text_light};
+    background: ${({ theme }) => theme.colors.text_light};
   }
 `;
 
 const Button = styled.button`
-
   font-size: 0.9rem;
-  background-color: ${({theme}) => theme.colors.text_dark};
+  background-color: ${({ theme }) => theme.colors.text_dark};
   border: none;
   padding: 0.8rem 1.1rem;
-  color: ${({theme}) => theme.colors.text_light};
+  color: ${({ theme }) => theme.colors.text_light};
   border-radius: 1rem;
-  box-shadow: 0px 12px 24px -7px ${({theme}) => theme.colors.text_dark};
+  box-shadow: 0px 12px 24px -7px ${({ theme }) => theme.colors.text_dark};
   transition: all 0.2s ease-in-out;
   margin-left: 0.5rem;
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0px 17px 16px -11px ${({theme}) => theme.colors.text_dark};
+    box-shadow: 0px 17px 16px -11px ${({ theme }) => theme.colors.text_dark};
     transform: translateY(-5px);
   }
 
   span {
     font-weight: 900;
   }
-
 `;
 
 const Hamburger = styled.div`
@@ -163,7 +167,7 @@ const Hamburger = styled.div`
   span {
     height: 2px;
     width: 25px;
-    background-color: ${({theme}) => theme.colors.text_dark};
+    background-color: ${({ theme }) => theme.colors.text_dark};
     margin-bottom: 4px;
     border-radius: 5px;
   }

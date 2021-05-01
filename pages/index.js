@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Navbar from "../components/Navbar";
 import HeroText from "../components/HeroText";
+import Navbar from "../components/Navbar";
+import styled from "styled-components";
 
 export default function Home() {
   return (
